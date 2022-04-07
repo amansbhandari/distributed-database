@@ -1,4 +1,4 @@
-BannerID|varchar(30)|true|PK
-name|varchar(10)|true
-weight|INT|false
-eyecolor|varchar(30)|false
+BannerID|varchar(30)|true|PK|||
+name|varchar(10)|true||||
+weight|INT|false||||
+eyecolor|varchar(30)|false||||
