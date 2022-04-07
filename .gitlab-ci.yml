@@ -18,6 +18,13 @@ stages:          # List of stages for jobs, and their order of execution
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
+  image: maven:latest
+  tags:
+    - dalfcs_docker_autoscale
   script:
     - mvn clean package -DskipTests=true
+  artifacts:
+    paths:
+       - target/*.jar
+
 
