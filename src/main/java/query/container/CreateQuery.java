@@ -18,7 +18,7 @@ public class CreateQuery {
 
     private String primaryKey;      //L.H.S of the where clause
 
-    private String foreignKey;      //Condition of the where clause
+    private String foreignKey;      //Foreign key column name
 
     private String foreignKeyRefTable; //Reference table of the foreign key
 

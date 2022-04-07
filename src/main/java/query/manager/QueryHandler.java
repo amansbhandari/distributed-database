@@ -1,6 +1,7 @@
 package query.manager;
 
 import query.container.CreateQuery;
+import query.container.InsertQuery;
 import query.container.SqlType;
 import query.response.Response;
 import query.response.ResponseType;
@@ -18,9 +19,9 @@ public class QueryHandler
         {
             return CreateHandler.executeCreateQuery((CreateQuery) query);
         }
-        else if(sqlType.equals(SqlType.SELECT))
+        else if(sqlType.equals(SqlType.INSERT))
         {
-
+            return InsertHandler.executeInsertQuery((InsertQuery) query);
         }
         return new Response(ResponseType.INTERNAL_ERROR, "System error.");
     }
