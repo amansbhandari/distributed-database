@@ -4,21 +4,21 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class writeQueries {
+import parser.exception.InvalidQueryException;
+
+public class WriteQueries {
     public static String dbName="";
     public static String query="";
-
-    void takeInput(){
+    QueryParserExecutor queryParserExecutor;
+    
+    void takeInput() throws InvalidQueryException{
         Scanner sc = new Scanner(System.in);
-
-       /* if(dbName.equals("")){
-            System.out.println("Write the database name:");
-            dbName = sc.nextLine();
-        }*/
         System.out.println("Write the query()");
         query= sc.nextLine();
         System.out.println(query);
-        parse();
+        queryParserExecutor=new    QueryParserExecutor();
+        queryParserExecutor.processQuery(query);
+       // parse();
     }
     void parse(){
         String[] type = query.split(" ");
@@ -122,7 +122,7 @@ public class writeQueries {
         return false;
     }
 
-    public boolean manager(){
+    public boolean manager() throws InvalidQueryException{
         takeInput();
 
         return true;
