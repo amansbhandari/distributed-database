@@ -1,12 +1,15 @@
 package localmetadata;
 
+import query.container.*;
 import query.container.CreateQuery;
 import query.container.CreateSchema;
 import query.container.InsertQuery;
 import query.container.SelectQuery;
 import query.response.Response;
 import query.response.ResponseType;
+import utils.UtilsCondition;
 import utils.UtilsConstant;
+import utils.UtilsFileHandler;
 import utils.UtilsMetadata;
 
 import javax.swing.text.Utilities;
@@ -202,7 +205,7 @@ public class LocalMetdataHandler {
 
                 for(int i = 0;i < indexOfColumns.size() ; i++)
                 {
-                    if(indexOfLHS == -1 || elements[indexOfLHS].equals(selectQuery.getFactor()))
+                    if(indexOfLHS == -1 || UtilsCondition.evaluateCondition(selectQuery.getWhereCond(), elements[indexOfLHS] , selectQuery.getFactor()))
                         result +=  elements[indexOfColumns.get(i)] + UtilsConstant.SEPERATOR;
                 }
 
@@ -215,6 +218,49 @@ public class LocalMetdataHandler {
 
 
         return new Response(ResponseType.SUCCESS,result);
+    }
+
+    public static Response executeDeleteQuery(DeleteQuery deleteQuery, String path) {
+
+        String fileTablePath = path + UtilsConstant.PREFIX_TABLE + deleteQuery.getTableName() + ".txt";
+        String fileMetaPath = path + UtilsConstant.PREFIX_LOCAL_METADATA + deleteQuery.getTableName() + ".txt";
+
+        List<Integer> indexOfColumns = new ArrayList<>();
+
+        int indexOfLHS = -1;
+
+        String result = "";
+
+        if(!deleteQuery.getColumnInWhere().isEmpty())
+            indexOfLHS = UtilsMetadata.getIndexOfColumnInTable(fileMetaPath , deleteQuery.getColumnInWhere());
+
+
+        try {
+            Scanner in = new Scanner(new FileReader(fileTablePath));
+            while(in.hasNext()) {
+                String line = in.next();
+                String elements[] = line.split("[|]");
+
+                if(indexOfLHS != -1 &&
+                        !UtilsCondition.evaluateCondition(deleteQuery.getWhereCond(), elements[indexOfLHS] , deleteQuery.getFactor()))
+                {
+                    result += line;
+                    result += "\n";
+                }
+            }
+            if(!result.isEmpty())
+                result = result.substring(0,result.length()-1);
+
+            UtilsFileHandler.writeToFile(fileTablePath, result);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            new Response(ResponseType.INTERNAL_ERROR, "System error");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            new Response(ResponseType.INTERNAL_ERROR, "System error");
+        }
+
+        return new Response(ResponseType.SUCCESS,"Record(s) deleted");
     }
 
 }

@@ -36,6 +36,11 @@ public class QueryHandler
         {
             return SelectHandler.executeSelectQuery((SelectQuery) query);
         }
+        else if(sqlType.equals(SqlType.DELETE))
+        {
+            return DeleteHandler.executeDeleteQuery((DeleteQuery) query);
+        }
+
         return new Response(ResponseType.INTERNAL_ERROR, "System error.");
     }
 }
