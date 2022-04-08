@@ -5,11 +5,7 @@ import java.util.List;
 /**
  * Contains the information on select query
  */
-public class SelectQuery {
-
-    private Boolean allColumnsSelected; //True if all columns were mentioned in select query
-
-    private List columns;           //Keep it empty for all the columns
+public class DeleteQuery {
 
     private String tableName;       //name of the table
 
@@ -21,28 +17,15 @@ public class SelectQuery {
 
     private String factor;          //R.H.S in where clause
 
-    public SelectQuery() {
+    public DeleteQuery() {
     }
 
-    public SelectQuery(List columns, String tableName, String database, String columnInWhere, WhereCond whereCond, String factor, Boolean allColumnsSelected) {
-        this.columns = columns;
+    public DeleteQuery(String tableName, String database, String columnInWhere, WhereCond whereCond, String factor) {
         this.tableName = tableName;
         this.database = database;
         this.columnInWhere = columnInWhere;
         this.whereCond = whereCond;
         this.factor = factor;
-        this.allColumnsSelected = allColumnsSelected;
-    }
-
-
-    //------ Getter and setter ----
-
-    public List getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List columns) {
-        this.columns = columns;
     }
 
     public String getTableName() {
@@ -83,13 +66,5 @@ public class SelectQuery {
 
     public void setFactor(String factor) {
         this.factor = factor;
-    }
-
-    public Boolean getAllColumnsSelected() {
-        return allColumnsSelected;
-    }
-
-    public void setAllColumnsSelected(Boolean allColumnsSelected) {
-        this.allColumnsSelected = allColumnsSelected;
     }
 }
