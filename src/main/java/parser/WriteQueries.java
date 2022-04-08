@@ -18,6 +18,12 @@ public class WriteQueries {
 	public static String query = "";
 	QueryParserExecutor queryParserExecutor;
 
+	
+	  
+    public WriteQueries() {
+    	 queryParserExecutor=new    QueryParserExecutor();
+    }
+
 	void takeInput() {
 		Scanner sc = new Scanner(System.in);
 
