@@ -22,6 +22,8 @@ public class CreateQueryProcessor {
 	
 	private String refTable;
 	
+	private String foreginKey;
+	
 	private String refId;
 	
 	
@@ -65,7 +67,7 @@ public class CreateQueryProcessor {
 					if(data.toLowerCase().contains("foreign")) {
 						
 						String refData=columnData[5];
-						
+						this.foreginKey=columnData[0];
 						this.refTable=refData.substring(0, refData.indexOf("("));
 						this.refId=refData.substring(refData.indexOf("(")+1, refData.indexOf(")"));
 						
@@ -105,57 +107,49 @@ public class CreateQueryProcessor {
 		return columns;
 	}
 
-	public void setColumns(List<String> columns) {
-		this.columns = columns;
-	}
-
 	public String getTableName() {
 		return tableName;
 	}
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
 
 	public String getDatabase() {
 		return database;
 	}
 
-	public void setDatabase(String database) {
-		this.database = database;
-	}
 
 	public List<String> getDatatype() {
 		return datatype;
 	}
 
-	public void setDatatype(List<String> datatype) {
-		this.datatype = datatype;
-	}
 
 	public String getPrimaryKey() {
 		return primaryKey;
 	}
 
-	public void setPrimaryKey(String primaryKey) {
-		this.primaryKey = primaryKey;
-	}
+	
 
 	public String getRefTable() {
 		return refTable;
 	}
 
-	public void setRefTable(String refTable) {
-		this.refTable = refTable;
-	}
+
 
 	public String getRefId() {
 		return refId;
 	}
 
-	public void setRefId(String refId) {
-		this.refId = refId;
+	
+	public String getForeginKey() {
+		return foreginKey;
 	}
+
+	@Override
+	public String toString() {
+		return "CreateQueryProcessor [columns=" + columns + ", tableName=" + tableName + ", database=" + database
+				+ ", datatype=" + datatype + ", primaryKey=" + primaryKey + ", refTable=" + refTable + ", foreginKey="
+				+ foreginKey + ", refId=" + refId + "]";
+	}
+
 	
 	
 }
