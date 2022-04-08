@@ -7,6 +7,7 @@ import QueryContainer.CreateQueryProcessor;
 import QueryContainer.DeleteQueryProcessor;
 import QueryContainer.InsertQueryProcessor;
 import QueryContainer.SelectQueryProcessor;
+import QueryContainer.UpdateQueryProcessor;
 import parser.exception.InvalidQueryException;
 import query.container.CreateQuery;
 
@@ -21,6 +22,8 @@ public class QueryParserExecutor {
 	private DeleteQueryProcessor deleteQueryProcessor;
 	
 	private SelectQueryProcessor selectQueryProcessor;
+	
+	private UpdateQueryProcessor updateQueryProcessor;
 
 	private CreateQuery createQuery;
 
@@ -64,6 +67,14 @@ public class QueryParserExecutor {
 			this.selectQueryProcessor = new SelectQueryProcessor();
 			selectQueryProcessor.parseSelectQuery(query);
 			System.out.println(selectQueryProcessor.toString());
+		}
+		 
+		
+		
+		if (query.toLowerCase().contains("update")) {
+			this.updateQueryProcessor = new UpdateQueryProcessor();
+			updateQueryProcessor.parseUpdateQuery(query);
+			System.out.println(updateQueryProcessor.toString());
 		}
 		 
 

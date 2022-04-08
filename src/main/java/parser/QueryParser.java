@@ -62,7 +62,16 @@ public class QueryParser {
 			}
 
 		}
-		
+
+		if (query.toLowerCase().contains("update")) {
+
+			isQueryValid = isQueryValid(query, RegexConstant.UPDATE_REGEX);
+
+			if (!isQueryValid) {
+				this.errorMessage = "Invalid update  query syntax";
+			}
+
+		}
 		
 
 		return isQueryValid;
