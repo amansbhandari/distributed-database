@@ -17,17 +17,20 @@ public class SelectQuery {
     private WhereCond whereCond;    //Condition of the where clause
 
     private String factor;          //R.H.S in where clause
+    
+    private boolean allColumn = false;//Does query contains *
 
     public SelectQuery() {
     }
 
-    public SelectQuery(List columns, String tableName, String database, String columnInWhere, WhereCond whereCond, String factor) {
+    public SelectQuery(List columns, String tableName, String database, String columnInWhere, WhereCond whereCond, String factor,boolean allColumn) {
         this.columns = columns;
         this.tableName = tableName;
         this.database = database;
         this.columnInWhere = columnInWhere;
         this.whereCond = whereCond;
         this.factor = factor;
+        this.allColumn=allColumn;
     }
 
 

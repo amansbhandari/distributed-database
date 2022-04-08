@@ -6,8 +6,10 @@ import java.util.regex.Pattern;
 
 import QueryContainer.CreateQueryProcessor;
 import QueryContainer.InsertQueryProcessor;
+import QueryContainer.SelectQueryProcessor;
 import parser.exception.InvalidQueryException;
 import query.container.CreateQuery;
+import query.container.SelectQuery;
 import query.container.SqlType;
 import query.manager.QueryHandler;
 import query.response.Response;
@@ -75,9 +77,17 @@ public class WriteQueries {
     	if(query.toLowerCase().contains("create")) {
     		CreateQueryProcessor createQueryProc=this.queryParserExecutor.getCreateQueryProcessor();
     		CreateQuery createQuery=new CreateQuery(createQueryProc.getColumns(),createQueryProc.getDatatype(),null,createQueryProc.getTableName(),createQueryProc.getDatabase(),
-    				createQueryProc.getDatabase(),createQueryProc.getForeginKey(),createQueryProc.getRefTable(),createQueryProc.getRefId());
+    				createQueryProc.getPrimaryKey(),createQueryProc.getForeginKey(),createQueryProc.getRefTable(),createQueryProc.getRefId());
     		
     		response=QueryHandler.executeQuery(createQuery, SqlType.CREATE);
+    	}
+    	
+    	if(query.toLowerCase().contains("select")) {
+    		SelectQueryProcessor selectQueryProc=this.queryParserExecutor.getSelectQueryProcessor();
+    		SelectQuery selectQuery=new SelectQuery(selectQueryProc.getColumns(),selectQueryProc.getTableName(),selectQueryProc.getDatabase(),
+    				selectQueryProc.getColumnInWhere(),selectQueryProc.getWhereCond(),selectQueryProc.getFactor(),selectQueryProc.isAllColumn());
+    		
+    		response=QueryHandler.executeQuery(selectQuery, SqlType.SELECT);
     	}
     	
 	

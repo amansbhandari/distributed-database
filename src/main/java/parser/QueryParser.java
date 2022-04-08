@@ -62,6 +62,8 @@ public class QueryParser {
 			}
 
 		}
+		
+		
 
 		return isQueryValid;
 	}

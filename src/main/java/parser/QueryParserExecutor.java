@@ -59,11 +59,13 @@ public class QueryParserExecutor {
 			System.out.println(deleteQueryProcessor.toString());
 		}
 		
-		/*
-		 * if (query.toLowerCase().contains("select")) { this.selectQueryProcessor = new
-		 * SelectQueryProcessor(); selectQueryProcessor.parseDeleteQuery(query);
-		 * System.out.println(deleteQueryProcessor.toString()); }
-		 */
+		
+		if (query.toLowerCase().contains("select")) {
+			this.selectQueryProcessor = new SelectQueryProcessor();
+			selectQueryProcessor.parseSelectQuery(query);
+			System.out.println(selectQueryProcessor.toString());
+		}
+		 
 
 		return isQueryProcessed;
 	}
@@ -78,6 +80,10 @@ public class QueryParserExecutor {
 
 	public DeleteQueryProcessor getDeleteQueryProcessor() {
 		return deleteQueryProcessor;
+	}
+
+	public SelectQueryProcessor getSelectQueryProcessor() {
+		return selectQueryProcessor;
 	}
 
 }
