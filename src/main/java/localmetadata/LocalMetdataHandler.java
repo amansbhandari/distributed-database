@@ -1,6 +1,7 @@
 package localmetadata;
 
 import query.container.CreateQuery;
+import query.container.CreateSchema;
 import query.container.InsertQuery;
 import query.response.Response;
 import query.response.ResponseType;
@@ -169,4 +170,20 @@ public class LocalMetdataHandler {
 
         return "";
     }
+
+    public static Response createSchemaMetadata(CreateSchema schemaHandler, String path) {
+        new File(path + "/" + schemaHandler.getDatabase()).mkdirs();
+        return new Response(ResponseType.SUCCESS, "Database created");
+    }
+
+
+    public static Response checkSchemaQuery(CreateSchema schemaHandler, String path) {
+        File f = new File(path + "/" + schemaHandler.getDatabase());
+        if (f.exists() && f.isDirectory()) {
+            return new Response(ResponseType.SUCCESS, "Database exists");
+        }
+
+        return new Response(ResponseType.FAILED, "Database doesn't exist");
+    }
+
 }
