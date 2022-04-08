@@ -2,14 +2,16 @@ package parser;
 
 import java.util.Scanner;
 
+
 import parser.exception.InvalidQueryException;
 
 public class console {
 
 
-    boolean picker(int no) throws InvalidQueryException{
+    boolean picker(int no) {
         if(no==1){
             WriteQueries wq = new WriteQueries();
+
             boolean chk=wq.manager();
             if(!chk){
                 System.out.println("Something went wrong");
@@ -46,7 +48,9 @@ public class console {
         return false;
     }
 
-    void userInput() throws InvalidQueryException{
+
+    void userInput(){
+
         Scanner sc = new Scanner(System.in);
         System.out.println("1. Write Queries");
         System.out.println("2. Export");
@@ -62,7 +66,8 @@ public class console {
 
     }
 
-    public static void main(String[] main) throws InvalidQueryException{
+    public static void main(String[] string){
+
 
         console con = new console();
         Boolean flag=true;
@@ -73,7 +78,7 @@ public class console {
 
             if(quit.equalsIgnoreCase(sc.next())){
                 flag=false;
-            }
+            }s
           */  con.userInput();
 
             sc.close();
@@ -84,3 +89,4 @@ public class console {
 
     }
 }
+

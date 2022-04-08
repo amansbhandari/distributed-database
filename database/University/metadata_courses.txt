@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 BannerID|varchar(30)|true|PK|FK|students|BannerId
 courseID|varchar(10)|true
 courseName|varchar(30)|false
+=======
+BannerID|varchar(30)|true||FK|students|BannerID
+courseID|varchar(10)|true||||
+courseName|varchar(30)|false||||
+>>>>>>> 98abea365d618865d2f2485877f7b8cd1a6709de
