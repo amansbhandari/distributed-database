@@ -50,30 +50,35 @@ public class console {
         System.out.println("2. Export");
         System.out.println("3. Data Model");
         System.out.println("4. Analysis");
-        Boolean success= picker(sc.nextInt());
-        if(!success){
-            System.out.println("Invalid selection, select again");
+        int no = 1;
+                //sc.nextInt();
+        Boolean success= picker(no);
+       // if(!success){
+         //   System.out.println("Invalid selection, select again");
             userInput();
-        }
-        sc.close();
+        //}
+
     }
 
     public static void main(String[] main){
 
         console con = new console();
-        Scanner sc = new Scanner(System.in);
-        while(true){
-            String quit="";
-            System.out.println("type 'Quit' to exit");
-            quit= sc.nextLine();
-            if(quit.equalsIgnoreCase("quit")){
-                break;
+        Boolean flag=true;
+        while(flag){
+            Scanner sc = new Scanner(System.in);
+        /*    String quit="quit";
+            System.out.println("press 'q' to exit");
+
+            if(quit.equalsIgnoreCase(sc.next())){
+                flag=false;
             }
-            con.userInput();
+          */  con.userInput();
+
+            sc.close();
+
         }
         System.out.println("Quitted!!");
 
-        sc.close();
 
     }
 }
