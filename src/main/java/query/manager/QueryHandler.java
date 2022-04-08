@@ -1,5 +1,6 @@
 package query.manager;
 
+import query.container.*;
 import query.container.CreateQuery;
 import query.container.CreateSchema;
 import query.container.InsertQuery;
@@ -30,6 +31,10 @@ public class QueryHandler
         else if(sqlType.equals(SqlType.CHECK_SCHEMA))
         {
             return SchemaHandler.checkSchemaQuery((CreateSchema) query);
+        }
+        else if(sqlType.equals(SqlType.SELECT))
+        {
+            return SelectHandler.executeSelectQuery((SelectQuery) query);
         }
         return new Response(ResponseType.INTERNAL_ERROR, "System error.");
     }
