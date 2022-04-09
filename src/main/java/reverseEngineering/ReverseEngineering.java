@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class ReverseEngineering {
-    private final String mDatabaseFilePath = "database\\";
-    HashMap<String, HashMap<String, String>> dependencyGraph = new HashMap<>();
+    private final String mDatabaseFilePath = System.getProperty("user.dir") + "\\database\\";
+    private HashMap<String, HashMap<String, String[]>> dependencyGraph = new HashMap<>();
     HashMap<String, Integer> tableRank = new HashMap<>();
     HashMap<Integer, Integer> relationships = new HashMap<>();
     int count = 0;
@@ -18,7 +18,6 @@ public class ReverseEngineering {
     }
 
     private void generateTableRank(String databaseName) {
-        System.out.println(mDatabaseFilePath + databaseName);
         File databaseFolder = new File(mDatabaseFilePath + databaseName);
         File[] tableMetadataFiles = databaseFolder.listFiles();
         String tableName;
@@ -48,8 +47,6 @@ public class ReverseEngineering {
                 }
             }
         }
-        System.out.println(tableRank);
-        System.out.println(relationships);
         int[][] ints = new int[relationships.size()][2];
         int i = 0;
         for (Integer keys : relationships.keySet()) {
@@ -57,7 +54,6 @@ public class ReverseEngineering {
             ints[i][1] = relationships.get(keys);
             i++;
         }
-        System.out.println(Arrays.deepToString(ints));
         TopographicalSort topographicalSort = new TopographicalSort();
         List<Integer> tablePriorityOrder = topographicalSort.canFinish(relationships.size() + 1, ints);
         String[] rankedTables = new String[tableRank.size()];
@@ -75,14 +71,18 @@ public class ReverseEngineering {
     private void readTableMetadata(File tableFile, String tableName) {
         String[] columnDesc;
         int columnDescLength;
-        HashMap<String, String> dependencyHashMap = new HashMap<>();
+        String cardinality;
+        HashMap<String, String[]> dependencyHashMap = new HashMap<>();
         try {
             Scanner readFile = new Scanner(tableFile);
             while (readFile.hasNext()) {
                 columnDesc = readFile.nextLine().split("[|]");
                 columnDescLength = columnDesc.length;
                 if (columnDescLength > 4) {
-                    dependencyHashMap.put(columnDesc[5], columnDesc[6]);
+                    if (columnDesc[3].equals("PK"))
+                        cardinality = "1:N";
+                    else cardinality = "N:M";
+                    dependencyHashMap.put(columnDesc[5],new String[]{columnDesc[5], columnDesc[6], cardinality});
                     relationships.put(tableRank.get(tableName), tableRank.get(columnDesc[5]));
                 }
             }
@@ -90,5 +90,9 @@ public class ReverseEngineering {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public HashMap<String, HashMap<String, String[]>> getDependencyGraph() {
+        return dependencyGraph;
     }
 }
