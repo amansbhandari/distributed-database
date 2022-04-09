@@ -3,15 +3,15 @@ package reverseEngineering;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class DrawERD {
-    private String mDatabaseFilePath;
     private String erd = "";
-
-    public String draw(String[] rankOrder, String databaseName, HashMap<String, HashMap<String, String[]>> dependencyGraph) {
+    HashMap<String, List<String>> mTableMetadata;
+    public String draw(String[] rankOrder, HashMap<String, List<String>> tableMetadata, HashMap<String, HashMap<String, String[]>> dependencyGraph) {
         erd = "";
-        mDatabaseFilePath = System.getProperty("user.dir") + "/database/" + databaseName + "/";
+        mTableMetadata = tableMetadata;
         for (int i = 0; i < rankOrder.length; i++) {
             if (rankOrder[i] == null)
                 continue;
@@ -35,19 +35,11 @@ public class DrawERD {
     }
 
     private void readMetadata(String tableName) {
-        File tableFile = new File(mDatabaseFilePath + "metadata_" + tableName+".txt");
+        List<String> tableMetadata = mTableMetadata.get(tableName);
         String[] columnDesc;
-        if (tableFile.isFile()) {
-            try {
-                Scanner readFile = new Scanner(tableFile);
-                while (readFile.hasNext()) {
-                    columnDesc = readFile.nextLine().split("[|]");
-                    erd += "|  " + columnDesc[0] + " " + columnDesc[1] + " ".repeat(30 - (columnDesc[0] + columnDesc[1]).length()) + "|\n";
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
+        for (String readFile : tableMetadata) {
+            columnDesc = readFile.split("[|]");
+            erd += "|  " + columnDesc[0] + " " + columnDesc[1] + " ".repeat(30 - (columnDesc[0] + columnDesc[1]).length()) + "|\n";
         }
         erd += "-".repeat(35);
     }

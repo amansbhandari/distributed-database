@@ -1,52 +1,70 @@
 package reverseEngineering;
 
+import DiskHandler.DistributedManager;
+import utils.UtilsConstant;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
 public class ReverseEngineering {
-    private final String mDatabaseFilePath = System.getProperty("user.dir") + "/database/";
+    private final String mDatabaseFilePath = UtilsConstant.DATABASE_ROOT_FOLDER+"/";
     private HashMap<String, HashMap<String, String[]>> dependencyGraph = new HashMap<>();
     HashMap<String, Integer> tableRank = new HashMap<>();
     HashMap<Integer, Integer> relationships = new HashMap<>();
+    HashMap<String, List<String>> mTableMetadata;
     int count = 0;
 
 
-    public String[] getRankOrder(String databaseName){
-        generateTableRank(databaseName);
-        return createRelationships(databaseName);
-    }
-
-    private void generateTableRank(String databaseName) {
-        File databaseFolder = new File(mDatabaseFilePath + databaseName);
-        File[] tableMetadataFiles = databaseFolder.listFiles();
-        String tableName;
-
-        for (File tableFile : tableMetadataFiles) {
-            if (tableFile.isFile()) {
-                if (tableFile.getName().startsWith("metadata")) {
-                    tableName = tableFile.getName().split("_")[1];
-                    dependencyGraph.put(tableName.substring(0,tableName.length()-4), null);
-                    tableRank.put(tableName.substring(0,tableName.length()-4), count++);
-                }
-            }
+    public String[] getRankOrder(String databaseName) {
+        try {
+            generateTableRank(databaseName);
+            return createRelationships();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return new String[]{};
         }
     }
 
-    public String[] createRelationships(String databaseName) {
-        File databaseFolder = new File(mDatabaseFilePath + databaseName);
-        File[] tableMetadataFiles = databaseFolder.listFiles();
-        String tableName;
+    private void generateTableRank(String databaseName) throws FileNotFoundException {
 
-        for (File tableFile : tableMetadataFiles) {
-            if (tableFile.isFile()) {
-                if (tableFile.getName().startsWith("metadata")) {
-                    tableName = tableFile.getName().split("_")[1];
-                    dependencyGraph.put(tableName.substring(0,tableName.length()-4), null);
-                    readTableMetadata(tableFile, tableName.substring(0,tableName.length()-4));
+            mTableMetadata = getTableMetadata(databaseName, "metadata_");
+            for (String tableName: mTableMetadata.keySet()) {
+                dependencyGraph.put(tableName, null);
+                tableRank.put(tableName, count++);
+            }
+
+    }
+
+    public HashMap<String, List<String>> getTableMetadata(String databaseName, String filePrefix) {
+        HashMap<String, List<String>> databaseMetadata = new HashMap<>();
+        try {
+            File databaseFolder = new File(mDatabaseFilePath + databaseName);
+            String readLine = "";
+            String tableName = "";
+            if (databaseFolder.isFile()) {
+                Scanner readFile = new Scanner(databaseFolder);
+                while (readFile.hasNext()) {
+                    readLine = readFile.nextLine();
+                    if (readLine.startsWith(filePrefix)) {
+                        tableName = readLine.split("_")[1].split("\\|")[0];
+                        List<String> tableMetadata = DistributedManager.readFile(databaseName, mDatabaseFilePath + databaseName + "/" + readLine, readLine);
+                        databaseMetadata.put(tableName.substring(0, tableName.length() - 4), tableMetadata);
+                    }
                 }
             }
         }
+        catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        return databaseMetadata;
+    }
+
+    public String[] createRelationships() {
+        for (String tableName: mTableMetadata.keySet()) {
+            readTableMetadata(mTableMetadata.get(tableName), tableName);
+        }
+
         int[][] ints = new int[relationships.size()][2];
         int i = 0;
         for (Integer keys : relationships.keySet()) {
@@ -68,15 +86,14 @@ public class ReverseEngineering {
         return rankedTables;
     }
 
-    private void readTableMetadata(File tableFile, String tableName) {
+    private void readTableMetadata(List<String> tableMetadata, String tableName) {
         String[] columnDesc;
         int columnDescLength;
         String cardinality;
         HashMap<String, String[]> dependencyHashMap = new HashMap<>();
-        try {
-            Scanner readFile = new Scanner(tableFile);
-            while (readFile.hasNext()) {
-                columnDesc = readFile.nextLine().split("[|]");
+
+            for(String metadata: tableMetadata) {
+                columnDesc = metadata.split("[|]");
                 columnDescLength = columnDesc.length;
                 if (columnDescLength > 4) {
                     if (columnDesc[3].equals("PK"))
@@ -87,9 +104,7 @@ public class ReverseEngineering {
                 }
             }
             dependencyGraph.put(tableName, dependencyHashMap);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public HashMap<String, HashMap<String, String[]>> getDependencyGraph() {
