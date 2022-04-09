@@ -2,7 +2,7 @@ package utils;
 
 public class UtilsConstant {
 
-    public static final String DATABASE_ROOT_FOLDER = "database";
+    public static String DATABASE_ROOT_FOLDER = "database";
     public static final String LOG_ROOT_FOLDER= "logs";
     public static final String SUCCESS_STATUS = "success";
     public static final String FAILED_STATUS = "failed";
