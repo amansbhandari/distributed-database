@@ -1,9 +1,12 @@
 package utils;
 
+import DiskHandler.DistributedManager;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -199,6 +202,30 @@ public class UtilsMetadata {
         }
 
         return flag;
+    }
+
+    public HashMap<String, List<String>> fetchDBData(String databaseName, String filePrefix) {
+        HashMap<String, List<String>> databaseMetadata = new HashMap<>();
+        try {
+            File databaseFolder = new File(UtilsConstant.DATABASE_ROOT_FOLDER+"/" + databaseName);
+            String readLine = "";
+            String tableName = "";
+            if (databaseFolder.isFile()) {
+                Scanner readFile = new Scanner(databaseFolder);
+                while (readFile.hasNext()) {
+                    readLine = readFile.nextLine();
+                    if (readLine.startsWith(filePrefix)) {
+                        tableName = readLine.split("_")[1].split("\\|")[0];
+                        List<String> tableMetadata = DistributedManager.readFile(databaseName, UtilsConstant.DATABASE_ROOT_FOLDER+"/" + databaseName + "/" + readLine, readLine);
+                        databaseMetadata.put(tableName.substring(0, tableName.length() - 4), tableMetadata);
+                    }
+                }
+            }
+        }
+        catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        return databaseMetadata;
     }
 
 }
