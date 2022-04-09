@@ -2,7 +2,7 @@ package reverseEngineering;
 
 import java.util.*;
 
-class TopographicalSort {
+public class TopographicalSort {
     public List<Integer> canFinish(int numCourses, int[][] prerequisites) {
 
         List<Integer> orderList = new ArrayList<>();
@@ -38,9 +38,6 @@ class TopographicalSort {
                 if (indegree.get(n) == 0)
                     queue.add(n);
             }
-        }
-        for (int i = orderList.size() - 1; i >= 0; i--) {
-            System.out.println(orderList.get(i));
         }
         return orderList;
     }
