@@ -73,6 +73,21 @@ public class QueryParser {
 
 		}
 		
+		if (query.toLowerCase().contains("use")) {
+
+			isQueryValid = isQueryValid(query, RegexConstant.USE_REGEX);
+
+			if (!isQueryValid) {
+				this.errorMessage = "Invalid use database  query syntax";
+			}
+
+		}
+		
+		if (query.toLowerCase().contains("create") && isCreDbQuery(query)) {
+
+			isQueryValid = true;
+		}
+		
 
 		return isQueryValid;
 	}
@@ -108,6 +123,23 @@ public class QueryParser {
 
 	public String getErrorMessage() {
 		return errorMessage;
+	}
+	
+	private boolean isCreDbQuery(String query) {
+		boolean isCreDbQuery=false;
+		
+		final Pattern pattern = Pattern.compile(RegexConstant.CREATE_DATA_REGEX, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		final Matcher matcher = pattern.matcher(query);
+		
+		if(matcher.find()) {
+			isCreDbQuery=true;
+		}
+		
+		if(!isCreDbQuery) {
+			this.errorMessage="Invalid create database  query syntax";
+		}
+		
+	return isCreDbQuery;	
 	}
 
 }
