@@ -26,8 +26,8 @@ public class ReverseEngineering {
             if (tableFile.isFile()) {
                 if (tableFile.getName().startsWith("metadata")) {
                     tableName = tableFile.getName().split("_")[1];
-                    dependencyGraph.put(tableName, null);
-                    tableRank.put(tableName, count++);
+                    dependencyGraph.put(tableName.substring(0,tableName.length()-4), null);
+                    tableRank.put(tableName.substring(0,tableName.length()-4), count++);
                 }
             }
         }
@@ -42,8 +42,8 @@ public class ReverseEngineering {
             if (tableFile.isFile()) {
                 if (tableFile.getName().startsWith("metadata")) {
                     tableName = tableFile.getName().split("_")[1];
-                    dependencyGraph.put(tableName, null);
-                    readTableMetadata(tableFile, tableName);
+                    dependencyGraph.put(tableName.substring(0,tableName.length()-4), null);
+                    readTableMetadata(tableFile, tableName.substring(0,tableName.length()-4));
                 }
             }
         }
