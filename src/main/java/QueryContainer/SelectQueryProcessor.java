@@ -16,11 +16,11 @@ public class SelectQueryProcessor {
 
 	private String database; // name of the schema
 
-	private String columnInWhere; // L.H.S of the where clause
+	private String columnInWhere = ""; // L.H.S of the where clause
 
 	private WhereCond whereCond; // Condition of the where clause
 
-	private String factor; // R.H.S in where clause
+	private String factor = ""; // R.H.S in where clause
 
 	private boolean allColumn = false;
 	
@@ -54,7 +54,6 @@ public class SelectQueryProcessor {
 			this.tableName = matcher.group(7);
 			String[] columns = matcher.group(3).split(",");
 			this.columns = Arrays.asList(columns);
-
 		}
 	}
 

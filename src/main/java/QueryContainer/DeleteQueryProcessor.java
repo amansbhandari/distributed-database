@@ -8,11 +8,11 @@ import java.util.regex.Pattern;
 import parser.RegexConstant;
 
 public class DeleteQueryProcessor {
-	private String column; // Columns to query
+	private String column = ""; // Columns to query
 
 	private String tableName; // name of the table
 
-	private String value; // Columns to query
+	private String value = ""; // Columns to query
 
 	private boolean isContainWhere = false;
 	private WhereCond whereCond;

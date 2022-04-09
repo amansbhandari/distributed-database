@@ -1,0 +1,5 @@
+PersonID|int|false||||
+LastName|varchar|false||||
+FirstName|varchar|false||||
+Address|varchar|false||||
+City|varchar)|false||||
