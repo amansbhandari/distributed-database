@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class SelectQuery {
 
+
     private Boolean allColumnsSelected; //True if all columns were mentioned in select query
 
     private List columns;           //Keep it empty for all the columns
@@ -20,6 +21,7 @@ public class SelectQuery {
     private WhereCond whereCond;    //Condition of the where clause
 
     private String factor;          //R.H.S in where clause
+  
 
     public SelectQuery() {
     }
@@ -32,6 +34,7 @@ public class SelectQuery {
         this.whereCond = whereCond;
         this.factor = factor;
         this.allColumnsSelected = allColumnsSelected;
+
     }
 
 
@@ -92,4 +95,5 @@ public class SelectQuery {
     public void setAllColumnsSelected(Boolean allColumnsSelected) {
         this.allColumnsSelected = allColumnsSelected;
     }
+
 }

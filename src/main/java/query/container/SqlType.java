@@ -1,6 +1,7 @@
 package query.container;
 
 public enum SqlType {
+
     CREATE_SCHEMA,
     CREATE,
     INSERT,
@@ -8,4 +9,5 @@ public enum SqlType {
     UPDATE,
     DELETE,
     CHECK_SCHEMA
+
 }
