@@ -55,7 +55,7 @@ public class DistributedManager
             List<String> myInstance = UtilsFileHandler.readFile("instances/local.txt");
             List<String> otherInstance = UtilsFileHandler.readFile("instances/remote.txt");
 
-            if(instanceOfFile.equals(myInstance.get(0)))    //The file is in current instance
+            if(instanceOfFile.equals(myInstance.get(0)) || filename.startsWith("global_") || fullpath.startsWith("logs"))    //The file is in current instance
             {
                 return UtilsFileHandler.readFile(fullpath);
             }
@@ -88,9 +88,13 @@ public class DistributedManager
             List<String> myInstance = UtilsFileHandler.readFile("instances/local.txt");
             List<String> otherInstance = UtilsFileHandler.readFile("instances/remote.txt");
 
-            if(instanceOfFile.equals(myInstance.get(0)))    //The file is in current instance
+            if(instanceOfFile.equals(myInstance.get(0)) || filename.startsWith("global_") || fullpath.startsWith("logs"))    //The file is in current instance
             {
                 UtilsFileHandler.writeToFile(fullpath, content);
+
+                if(!filename.startsWith("global_") && !fullpath.startsWith("logs"))
+                    return true;
+
             }
 
             fullpath =  REMOTE_DATABASE_PATH + fullpath;
