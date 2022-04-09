@@ -12,6 +12,7 @@ import query.response.ResponseType;
  *  Handles different queries from user
  *  Use this class to pass tokenised query
  */
+
 public class QueryHandler
 {
     public static Response executeQuery(Object query, SqlType sqlType)   //we will need to instantiate the
@@ -36,6 +37,11 @@ public class QueryHandler
         {
             return SelectHandler.executeSelectQuery((SelectQuery) query);
         }
+        else if(sqlType.equals(SqlType.DELETE))
+        {
+            return DeleteHandler.executeDeleteQuery((DeleteQuery) query);
+        }
+
         return new Response(ResponseType.INTERNAL_ERROR, "System error.");
     }
 }

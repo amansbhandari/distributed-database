@@ -110,4 +110,25 @@ public class CreateQuery {
     public void setForeignKeyRefCol(String foreignKeyRefCol) {
         this.foreignKeyRefCol = foreignKeyRefCol;
     }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Create Table: ");
+        sb.append(tableName);
+        sb.append("(");
+        sb.append(columns.get(0));
+        sb.append(" ");
+        sb.append(columnsDataType.get(0));
+        sb.append(", ");
+        for(int i=1; i<columns.size()-1; i++){
+            sb.append(columns.get(i));
+            sb.append(" ");
+            sb.append(columnsDataType.get(i));
+            sb.append(", ");
+        }
+        sb.append(columns.get(columns.size()-1));
+        sb.append(" ");
+        sb.append(columnsDataType.get(columns.size()-1));
+        return sb.toString();
+    }
 }
