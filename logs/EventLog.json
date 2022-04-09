@@ -1,0 +1,34 @@
+{
+  "events": [
+    {
+      "event": "Update",
+      "onDatabase": "University",
+      "onTable": "students",
+      "onRow": "where BannerID=B0022222"
+    },
+    {
+      "event": "Delete",
+      "onDatabase": "University",
+      "onTable": "students",
+      "onRow": "where BannerID=B0022222"
+    },
+    {
+      "event": "Insert into table",
+      "onDatabase": "University",
+      "onTable": "students",
+      "columns": "",
+      "rows": "B0033333|aman|88|brown"
+    },
+    {
+      "event": "Create table",
+      "onDatabase": "University",
+      "onTable": "students"
+    },
+    {
+      "event": "Update",
+      "onDatabase": "University",
+      "onTable": "students",
+      "onRow": "where BannerID=B0022222"
+    }
+  ]
+}
