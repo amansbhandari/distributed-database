@@ -9,6 +9,7 @@ public class UtilsConstant {
     public static final String PREFIX_LOCAL_METADATA = "metadata_";
     public static final String PREFIX_TABLE = "table_";
     public static final String SEPERATOR = "|";
+    public static final String GM_FILE_NAME = "global_metadata.txt";
 
 
 }

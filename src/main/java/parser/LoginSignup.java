@@ -21,7 +21,7 @@ public class LoginSignup {
 
 
 
-        FileReader fr =  new FileReader("D:\\Dal\\T2\\DW\\Project\\mergeConflicts\\src\\main\\java\\parser\\UserData\\User_Profile.txt");
+        FileReader fr =  new FileReader("src/main/java/parser/UserData/User_Profile.txt");
         BufferedReader br= new BufferedReader(fr);
 
 
@@ -117,11 +117,11 @@ public class LoginSignup {
         System.out.println("A3:");
         ans.add(sc.nextLine());
 
-        File f = new File("D:\\Dal\\T2\\DW\\Project\\mergeConflicts\\src\\main\\java\\parser\\UserData\\User_Profile.txt");
+        File f = new File("src/main/java/parser/UserData/User_Profile.txt");
 
 
 
-        FileReader fr =  new FileReader("D:\\Dal\\T2\\DW\\Project\\mergeConflicts\\src\\main\\java\\parser\\UserData\\User_Profile.txt");
+        FileReader fr =  new FileReader("src/main/java/parser/UserData/User_Profile.txt");
         BufferedReader br= new BufferedReader(fr);
 
 

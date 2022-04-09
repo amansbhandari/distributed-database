@@ -8,6 +8,6 @@ public enum SqlType {
     SELECT,
     UPDATE,
     DELETE,
+    DELETE_SCHEMA,
     CHECK_SCHEMA
-
 }

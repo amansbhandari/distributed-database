@@ -48,8 +48,7 @@ public class console {
         System.out.println("2. Export");
         System.out.println("3. Data Model");
         System.out.println("4. Analysis");
-        int no = 1;
-                //sc.nextInt();
+        int no = sc.nextInt();
         Boolean success= picker(no);
        // if(!success){
          //   System.out.println("Invalid selection, select again");
