@@ -55,6 +55,7 @@ public class UpdateQueryProcessor {
 			String[] st = matcher.group(4).split("=");
 			this.colTobeUpdate = st[0];
 			this.colValueTobeSet = st[1];
+			this.colValueTobeSet = this.colValueTobeSet.substring(1,this.colValueTobeSet.length()-1);
 
 			getOpeTokens(matcher.group(6));
 		}
@@ -84,6 +85,7 @@ public class UpdateQueryProcessor {
 		}
 		this.columnInWhere = values[0].trim();
 		this.factor = values[1].trim();
+		this.factor = this.factor.substring(1,this.factor.length()-1);
 
 	}
 
@@ -111,7 +113,8 @@ public class UpdateQueryProcessor {
 		this.whereCond = whereCond;
 	}
 
-	public String getFactor() {
+	public String getFactor()  {
+
 		return factor;
 	}
 
@@ -128,6 +131,7 @@ public class UpdateQueryProcessor {
 	}
 
 	public String getColValueTobeSet() {
+
 		return colValueTobeSet;
 	}
 

@@ -12,15 +12,15 @@ import java.io.UnsupportedEncodingException;
 
 public class CreateHandler {
 
-	public static Response executeCreateQuery(CreateQuery createQuery) {
-		try {
-			return LocalMetdataHandler.createTableMetadata(createQuery,
-					UtilsConstant.DATABASE_ROOT_FOLDER + "/" + createQuery.getDatabase() + "/");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return new Response(ResponseType.INTERNAL_ERROR, "System error.");
-	}
+    public static Response executeCreateQuery(CreateQuery createQuery)
+    {
+        try {
+            return LocalMetdataHandler.createTableMetadata(createQuery,UtilsConstant.DATABASE_ROOT_FOLDER + "/" + createQuery.getDatabase() + "/");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return new Response(ResponseType.INTERNAL_ERROR, "System error.");
+    }
 }

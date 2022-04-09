@@ -58,6 +58,7 @@ public class InsertQueryProcessor {
 
 			this.tableName = matcher.group(3);
 			String[] columns = matcher.group(4).split(",");
+
 			this.columns = Arrays.asList(columns);
 
 			String[] sValues = matcher.group(6).split(",");

@@ -1,5 +1,6 @@
 package parser;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 
@@ -20,29 +21,15 @@ public class console {
         }
         if(no==2){
 
-            analysis als = new analysis();
-            boolean chk=als.manager();
-            if(!chk){
-                System.out.println("Something went wrong");
-            }
+
             return true;
         }
         if(no==3){
 
-           export ex = new export();
-            boolean chk=ex.manager();
-            if(!chk){
-                System.out.println("Something went wrong");
-            }
             return true;
         }
         if(no==4){
 
-            analysis als = new analysis();
-            boolean chk=als.manager();
-            if(!chk){
-                System.out.println("Something went wrong");
-            }
             return true;
         }
         return false;
@@ -52,6 +39,11 @@ public class console {
     void userInput(){
 
         Scanner sc = new Scanner(System.in);
+        System.out.println();
+
+        System.out.println("======MENU======");
+        System.out.println();
+
         System.out.println("1. Write Queries");
         System.out.println("2. Export");
         System.out.println("3. Data Model");
@@ -65,26 +57,40 @@ public class console {
         //}
 
     }
+    void auth(Boolean passed) throws IOException {
 
-    public static void main(String[] string){
-
-
-        console con = new console();
-        Boolean flag=true;
-        while(flag){
-            Scanner sc = new Scanner(System.in);
+        LoginSignup ls = new LoginSignup();
+        if(passed) {
+            console con = new console();
+            Boolean flag = true;
+            while (flag) {
+                Scanner sc = new Scanner(System.in);
         /*    String quit="quit";
             System.out.println("press 'q' to exit");
 
             if(quit.equalsIgnoreCase(sc.next())){
                 flag=false;
             }s
-          */  con.userInput();
+          */
+                con.userInput();
 
-            sc.close();
+                sc.close();
 
+            }
+            System.out.println("Quitted!!");
         }
-        System.out.println("Quitted!!");
+        else {
+            System.out.println("Try Again!!");
+            passed= ls.runHere();
+            auth(passed);
+        }
+    }
+
+    public static void main(String[] string) throws IOException {
+        LoginSignup ls = new LoginSignup();
+        Boolean passed= ls.runHere();
+        console con = new console();
+        con.auth(passed);
 
 
     }

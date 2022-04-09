@@ -5,13 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import QueryContainer.CreateDatabaseProcessor;
-import QueryContainer.CreateQueryProcessor;
-import QueryContainer.DeleteQueryProcessor;
-import QueryContainer.InsertQueryProcessor;
-import QueryContainer.SelectQueryProcessor;
-import QueryContainer.UpdateQueryProcessor;
-import QueryContainer.UseDatabaseQueryProc;
+import QueryContainer.*;
 import parser.exception.InvalidQueryException;
 import query.container.CreateQuery;
 
@@ -24,17 +18,17 @@ public class QueryParserExecutor {
 	private InsertQueryProcessor insertQueryProcessor;
 
 	private DeleteQueryProcessor deleteQueryProcessor;
-
+	
 	private SelectQueryProcessor selectQueryProcessor;
-
+	
 	private UpdateQueryProcessor updateQueryProcessor;
 
 	private UseDatabaseQueryProc useDatabaseQueryProc;
-	
+
 	private CreateDatabaseProcessor createDatabaseProc;
 
 	private CreateQuery createQuery;
-	
+
 
 	public QueryParserExecutor() {
 		this.queryParser = new QueryParser();
@@ -50,14 +44,13 @@ public class QueryParserExecutor {
 		if (!isQueryProcessed) {
 			throw new InvalidQueryException(this.queryParser.getErrorMessage());
 		}
-		
 		if (isCreDbQuery(query)) {
 			this.createDatabaseProc = new CreateDatabaseProcessor();
 			createDatabaseProc.parseCreDataQuery(query);
 			System.out.println(createDatabaseProc.toString());
-		} 
-		
-		if (query.toLowerCase().contains("create") && !isCreDbQuery(query)) {
+		}
+
+		if (query.toLowerCase().contains("create")) {
 			this.createQueryProcessor = new CreateQueryProcessor();
 			createQueryProcessor.parseCreateQuery(query);
 			// create object of createQuery using createQueryProcessor
@@ -76,17 +69,12 @@ public class QueryParserExecutor {
 			deleteQueryProcessor.parseDeleteQuery(query);
 			System.out.println(deleteQueryProcessor.toString());
 		}
-
+		
+		
 		if (query.toLowerCase().contains("select")) {
 			this.selectQueryProcessor = new SelectQueryProcessor();
 			selectQueryProcessor.parseSelectQuery(query);
 			System.out.println(selectQueryProcessor.toString());
-		}
-
-		if (query.toLowerCase().contains("update")) {
-			this.updateQueryProcessor = new UpdateQueryProcessor();
-			updateQueryProcessor.parseUpdateQuery(query);
-			System.out.println(updateQueryProcessor.toString());
 		}
 
 		if (query.toLowerCase().contains("use")) {
@@ -94,10 +82,31 @@ public class QueryParserExecutor {
 			useDatabaseQueryProc.parseUseQUery(query);
 			System.out.println(useDatabaseQueryProc.toString());
 		}
+
+
 		
-	
+		
+		if (query.toLowerCase().contains("update")) {
+			this.updateQueryProcessor = new UpdateQueryProcessor();
+			updateQueryProcessor.parseUpdateQuery(query);
+			System.out.println(updateQueryProcessor.toString());
+		}
+		 
 
 		return isQueryProcessed;
+	}
+
+	public boolean isCreDbQuery(String query) {
+		boolean isCreDbQuery=false;
+
+		final Pattern pattern = Pattern.compile(RegexConstant.CREATE_DATA_REGEX, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		final Matcher matcher = pattern.matcher(query);
+
+		if(matcher.find()) {
+			isCreDbQuery=true;
+		}
+
+		return isCreDbQuery;
 	}
 
 	public CreateQueryProcessor getCreateQueryProcessor() {
@@ -124,18 +133,4 @@ public class QueryParserExecutor {
 		return createDatabaseProc;
 	}
 
-	public boolean isCreDbQuery(String query) {
-		boolean isCreDbQuery=false;
-		
-		final Pattern pattern = Pattern.compile(RegexConstant.CREATE_DATA_REGEX, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		final Matcher matcher = pattern.matcher(query);
-		
-		if(matcher.find()) {
-			isCreDbQuery=true;
-		}
-		
-	return isCreDbQuery;	
-	}
-	
-	
 }

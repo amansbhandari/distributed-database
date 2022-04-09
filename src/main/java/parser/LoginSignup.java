@@ -1,8 +1,8 @@
 package parser;
 
 import java.io.*;
+import java.security.MessageDigest;
 import java.util.*;
-
 public class LoginSignup {
     //"User_Profile"
 
@@ -11,8 +11,6 @@ public class LoginSignup {
         String userId="";
         String pwd="",orgpwd="";
 
-        ArrayList<String> que = new ArrayList<>();
-        ArrayList<String> ans = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
         String temp="";
 
@@ -36,16 +34,12 @@ public class LoginSignup {
             temp+=st;
 
         }
-
+        int errorType=-1;
         String byUser[] = temp.split("]");
-        for (int j=0; j<byUser.length;j++){
-            System.out.println(byUser[j]);
-        }
         for(int i=0; i<byUser.length; i++){
             byUser[i]= byUser[i].substring(1,byUser[i].length()-1);
 
             String[] parts = byUser[i].split(",");
-
                 if(parts[0].equalsIgnoreCase(userId)){
                     orgpwd = parts[1];
                     if(orgpwd.equals(pwd)){
@@ -59,13 +53,37 @@ public class LoginSignup {
                         System.out.println("A:");
                         String tempAns= sc.nextLine();
                         if(tempAns.equalsIgnoreCase(parts[randomElement+1])){
+
                             return true;
+                        }else {
+                            errorType=1;
                         }
 
 
+                    }else {
+                        errorType=2;
                     }
                 }
+                else {
+                    errorType=3;
+                    }
         }
+        if(errorType==3){
+            System.out.println("Username not exist :(");
+
+        }
+        if(errorType==2){
+            System.out.println("Password not matched :(");
+
+        }
+        if(errorType==1){
+            System.out.println("Answer not matched :(");
+        }
+        if(errorType==-1){
+            System.out.println("Algorithm issue :(");
+        }
+
+
         return false;
     }
     boolean register() throws IOException {
@@ -80,7 +98,7 @@ public class LoginSignup {
         userId = sc.nextLine();
         System.out.println("Type password:");
         pwd=sc.nextLine();
-
+     //   String sha256hex = org.apache.commons.codec.digest.DigestUtils.sha256Hex(pwd);
         System.out.println("Q1:");
         que.add(sc.nextLine());
 
@@ -136,8 +154,11 @@ public class LoginSignup {
         fw.append("}]\n");
         fw.close();
         ff.close();
-        return true;
-    }
+        if(login()){
+            return true;
+        }
+        return false;
+        }
 
     Boolean runHere() throws IOException {
         System.out.println("1.Login");

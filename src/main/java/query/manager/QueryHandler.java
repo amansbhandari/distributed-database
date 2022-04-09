@@ -13,7 +13,6 @@ import query.response.ResponseType;
  *  Handles different queries from user
  *  Use this class to pass tokenised query
  */
-
 public class QueryHandler
 {
 

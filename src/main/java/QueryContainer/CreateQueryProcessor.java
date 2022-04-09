@@ -54,10 +54,13 @@ public class CreateQueryProcessor {
 			String metadata[] = temp.split(",");
 
 			for (String data : metadata) {
-
+				data=" "+data;
 				String columnData[] = data.split("\s+");
-				this.columns.add(columnData[0]);
-				this.datatype.add(columnData[1]);
+
+
+				this.columns.add(columnData[1]);
+				this.datatype.add(columnData[2]);
+				System.out.println(data);
 
 				if (columnData.length > 2) {
 					if(data.toLowerCase().contains("primary")) {
