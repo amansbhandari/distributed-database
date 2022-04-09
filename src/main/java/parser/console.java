@@ -42,7 +42,7 @@ public class console {
 
             DrawERD drawERD = new DrawERD();
             HashMap<String, HashMap<String, String[]>> dependencyGraph = reverseEngineering.getDependencyGraph();
-            String erd = drawERD.draw(rankOrder, databaseName, dependencyGraph);
+            String erd = drawERD.draw(rankOrder, reverseEngineering.getTableMetadata(databaseName, "metadata_"), dependencyGraph);
             System.out.println(erd);
             return true;
         }
