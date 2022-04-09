@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class ReverseEngineering {
-    private final String mDatabaseFilePath = System.getProperty("user.dir") + "\\database\\";
+    private final String mDatabaseFilePath = System.getProperty("user.dir") + "/database/";
     private HashMap<String, HashMap<String, String[]>> dependencyGraph = new HashMap<>();
     HashMap<String, Integer> tableRank = new HashMap<>();
     HashMap<Integer, Integer> relationships = new HashMap<>();
