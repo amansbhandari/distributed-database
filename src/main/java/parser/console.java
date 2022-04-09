@@ -1,10 +1,13 @@
 package parser;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
 import parser.exception.InvalidQueryException;
+import reverseEngineering.DrawERD;
+import reverseEngineering.ReverseEngineering;
 
 public class console {
 
@@ -32,6 +35,17 @@ public class console {
 
             return true;
         }
+        if(no==5){
+            String databaseName = "University";
+            ReverseEngineering reverseEngineering = new ReverseEngineering();
+            String[] rankOrder = reverseEngineering.getRankOrder(databaseName);
+
+            DrawERD drawERD = new DrawERD();
+            HashMap<String, HashMap<String, String[]>> dependencyGraph = reverseEngineering.getDependencyGraph();
+            String erd = drawERD.draw(rankOrder, databaseName, dependencyGraph);
+            System.out.println(erd);
+            return true;
+        }
         return false;
     }
 
@@ -48,7 +62,8 @@ public class console {
         System.out.println("2. Export");
         System.out.println("3. Data Model");
         System.out.println("4. Analysis");
-        int no = 1;
+        System.out.println("5. Reverse Engineering");
+        int no = 5;
                 //sc.nextInt();
         Boolean success= picker(no);
        // if(!success){

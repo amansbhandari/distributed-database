@@ -35,7 +35,7 @@ public class DrawERD {
     }
 
     private void readMetadata(String tableName) {
-        File tableFile = new File(mDatabaseFilePath + "metadata_" + tableName);
+        File tableFile = new File(mDatabaseFilePath + "metadata_" + tableName+".txt");
         String[] columnDesc;
         if (tableFile.isFile()) {
             try {
