@@ -1,0 +1,6 @@
+INSERT INTO students (  BannerID,  name,  weight, eyecolor )VALUES (  B0033333,  aman,  88, brown )
+INSERT INTO students (  BannerID,  name,  weight, eyecolor )VALUES (  B0022222,  karan,  88, brown )
+INSERT INTO courses (  BannerID,  BannerID, courseID )VALUES (  B0022222,  , New SDC )
+INSERT INTO courses (  BannerID,  BannerID, courseID )VALUES (  B0033333,  , New SDC )
+INSERT INTO courses (  BannerID,  BannerID, courseID )VALUES (  B0033333,  4322, New SDC )
+INSERT INTO courses (  BannerID,  BannerID, courseID )VALUES (  B0033333,  43221, New SDC1 )

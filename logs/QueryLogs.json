@@ -1,0 +1,20 @@
+{
+  "logs": [
+    {
+      "queryId": 1,
+      "text": "Selecte * from students",
+      "queryExcutionTime": "10ms",
+      "type": "Select",
+      "user": "qiwei",
+      "timeStamp": "2022/04/09 00:00::00"
+    },
+    {
+      "queryId1": 2,
+      "text": "Selecte * from students",
+      "queryExcutionTime": "10ms",
+      "type": "Select",
+      "user": "qiwei",
+      "timeStamp": "2022/04/09 00:00::00"
+    }
+  ]
+}
