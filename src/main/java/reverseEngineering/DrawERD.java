@@ -11,7 +11,7 @@ public class DrawERD {
 
     public String draw(String[] rankOrder, String databaseName, HashMap<String, HashMap<String, String[]>> dependencyGraph) {
         erd = "";
-        mDatabaseFilePath = System.getProperty("user.dir") + "\\database\\" + databaseName + "\\";
+        mDatabaseFilePath = System.getProperty("user.dir") + "/database/" + databaseName + "/";
         for (int i = 0; i < rankOrder.length; i++) {
             if (rankOrder[i] == null)
                 continue;
