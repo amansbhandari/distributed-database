@@ -1,6 +1,7 @@
 package localmetadata;
 
 
+import DiskHandler.DistributedManager;
 import query.container.CreateQuery;
 import query.response.Response;
 import query.response.ResponseType;
@@ -32,7 +33,6 @@ public class LocalMetdataHandler {
     public static Response createTableMetadata(CreateQuery createQuery, String path) throws FileNotFoundException, UnsupportedEncodingException {
 
         String filePath = path + UtilsConstant.PREFIX_LOCAL_METADATA + createQuery.getTableName() + ".txt";
-        PrintWriter writer = new PrintWriter(filePath, "UTF-8");
 
         for (int i = 0; i < createQuery.getColumns().size(); i++) {
             String line = createQuery.getColumns().get(i) + UtilsConstant.SEPERATOR +
@@ -62,10 +62,9 @@ public class LocalMetdataHandler {
                         UtilsConstant.SEPERATOR;
             }
 
-            writer.println(line);
+            DistributedManager.readFile(createQuery.getDatabase(),filePath,createQuery.getTableName() + ".txt");
 
         }
-        writer.close();
         return new Response(ResponseType.SUCCESS, "Query OK, 0 rows affected");
     }
 
