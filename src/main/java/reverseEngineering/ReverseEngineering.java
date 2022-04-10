@@ -39,7 +39,7 @@ public class ReverseEngineering {
     public HashMap<String, List<String>> getTableMetadata(String databaseName, String filePrefix) {
         HashMap<String, List<String>> databaseMetadata = new HashMap<>();
         try {
-            File databaseFolder = new File(mDatabaseFilePath + databaseName);
+            File databaseFolder = new File(mDatabaseFilePath + databaseName+"/global_metadata.txt");
             String readLine = "";
             String tableName = "";
             if (databaseFolder.isFile()) {
@@ -48,7 +48,7 @@ public class ReverseEngineering {
                     readLine = readFile.nextLine();
                     if (readLine.startsWith(filePrefix)) {
                         tableName = readLine.split("_")[1].split("\\|")[0];
-                        List<String> tableMetadata = DistributedManager.readFile(databaseName, mDatabaseFilePath + databaseName + "/" + readLine, readLine);
+                        List<String> tableMetadata = DistributedManager.readFile(databaseName, mDatabaseFilePath + databaseName + "/" + readLine.split("\\|")[0], readLine.split("\\|")[0]);
                         databaseMetadata.put(tableName.substring(0, tableName.length() - 4), tableMetadata);
                     }
                 }
