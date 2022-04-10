@@ -68,7 +68,7 @@ public class CreateHandler {
             return metadata  + "metadata_" + tableName + ".txt|" + 1 + "\n" + "table_" + tableName + ".txt|" + 1;
         if (tablesInInstance1 < tablesInInstance2)
             return metadata + "metadata_" + tableName + ".txt|" + 1 + "\n" + "table_" + tableName + ".txt|" + 1;
-        
+
         return metadata  + "metadata_" + tableName + ".txt|" + 2 + "\n" + "table_" + tableName + ".txt|" + 2;
     }
 }

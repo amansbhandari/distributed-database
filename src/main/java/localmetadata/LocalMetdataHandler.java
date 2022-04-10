@@ -161,7 +161,16 @@ public class LocalMetdataHandler {
     }
 
     public static Response createSchemaMetadata(CreateSchema schemaHandler, String path) {
-        new File(path + "/" + schemaHandler.getDatabase()).mkdirs();
+        //new File(path + "/" + schemaHandler.getDatabase()).mkdirs();
+        try {
+            DistributedManager.createFolder(UtilsConstant.DATABASE_ROOT_FOLDER.substring(2,UtilsConstant.DATABASE_ROOT_FOLDER.length()) + "/" + schemaHandler.getDatabase());
+            Thread.sleep(2000);
+            DistributedManager.createEmptyFile(UtilsConstant.DATABASE_ROOT_FOLDER.substring(2,UtilsConstant.DATABASE_ROOT_FOLDER.length()) + "/" + schemaHandler.getDatabase() + "/" + UtilsConstant.GM_FILE_NAME);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return new Response(ResponseType.SUCCESS, "Database created");
     }
 
