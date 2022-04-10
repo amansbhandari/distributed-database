@@ -1,20 +1,30 @@
 {
-  "logs": [
+  "querys": [
     {
-      "queryId": 1,
-      "text": "Selecte * from students",
-      "queryExcutionTime": "10ms",
-      "type": "Select",
+      "timeStamp": "2022-04-09 16:33:05.298",
+      "database": "University",
+      "condition": "",
+      "isSuccessful": true,
+      "columns": "column1,column2",
+      "query": "CREATE TABLE T1 ( column1 datatype,column2 datatype)",
+      "values": "",
+      "excutionTime": "10ms",
+      "type": "CREATE",
       "user": "qiwei",
-      "timeStamp": "2022/04/09 00:00::00"
+      "table": "T1"
     },
-    {
-      "queryId1": 2,
-      "text": "Selecte * from students",
-      "queryExcutionTime": "10ms",
-      "type": "Select",
-      "user": "qiwei",
-      "timeStamp": "2022/04/09 00:00::00"
-    }
+     {
+       "timeStamp": "2022-04-09 16:33:05.298",
+       "database": "University",
+       "condition": "",
+       "isSuccessful": true,
+       "columns": "column1,column2",
+       "query": "CREATE TABLE student ( column1 datatype,column2 datatype)",
+       "values": "",
+       "excutionTime": "10ms",
+       "type": "CREATE",
+       "user": "qiwei",
+       "table": "student"
+     }
   ]
 }

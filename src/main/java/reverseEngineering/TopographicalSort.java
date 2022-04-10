@@ -4,7 +4,8 @@ import java.util.*;
 
 public class TopographicalSort {
     public List<Integer> canFinish(int numCourses, int[][] prerequisites) {
-
+        System.out.println(numCourses);
+        System.out.println(Arrays.deepToString(prerequisites));
         List<Integer> orderList = new ArrayList<>();
         Map<Integer, List<Integer>> graph = new HashMap<>();
         Map<Integer, Integer> indegree = new HashMap<>();

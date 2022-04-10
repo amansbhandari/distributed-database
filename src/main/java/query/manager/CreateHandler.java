@@ -9,6 +9,7 @@ import query.response.ResponseType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
 
 public class CreateHandler {
 
-    public static Response executeCreateQuery(CreateQuery createQuery)
+    public static Response executeCreateQuery(CreateQuery createQuery) throws IOException
     {
         decideTableInstance(createQuery);
 
@@ -31,7 +32,7 @@ public class CreateHandler {
         return new Response(ResponseType.INTERNAL_ERROR, "System error.");
     }
 
-    public static void decideTableInstance(CreateQuery createQuery)
+    public static void decideTableInstance(CreateQuery createQuery) throws IOException
     {
         String gm = "";
         List<String> gm_metadata = DistributedManager.readFile(createQuery.getDatabase(),UtilsConstant.DATABASE_ROOT_FOLDER+"/"+createQuery.getDatabase()+"/"+UtilsConstant.GM_FILE_NAME,UtilsConstant.GM_FILE_NAME);

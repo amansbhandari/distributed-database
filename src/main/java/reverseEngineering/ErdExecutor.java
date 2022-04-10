@@ -1,5 +1,6 @@
 package reverseEngineering;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -31,7 +32,7 @@ public class ErdExecutor {
 		return query;
 	}
 
-	public void doReverseEngineering() {
+	public void doReverseEngineering() throws IOException {
 
 		String query = takeInput();
 
@@ -55,9 +56,9 @@ public class ErdExecutor {
 		}
 	}
 
-	private String printErd() {
+	private String printErd() throws IOException {
 		ReverseEngineering reverseEngineering = new ReverseEngineering();
-		String[] rankOrder = reverseEngineering.getRankOrder(this.dbName);
+		String[] rankOrder = reverseEngineering.getRankOrder(ErdExecutor.dbName);
 
 		DrawERD drawERD = new DrawERD();
 		HashMap<String, HashMap<String, String[]>> dependencyGraph = reverseEngineering.getDependencyGraph();

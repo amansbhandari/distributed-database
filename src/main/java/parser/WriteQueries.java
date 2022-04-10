@@ -1,5 +1,6 @@
 package parser;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -25,7 +26,7 @@ public class WriteQueries {
     	 queryParserExecutor=new    QueryParserExecutor();
     }
 
-	void takeInput() {
+	void takeInput() throws IOException {
 		Scanner sc = new Scanner(System.in);
 
 		System.out.println("Write the query()");
@@ -53,7 +54,7 @@ public class WriteQueries {
 
 	}
 
-	private Response setDataAndExecuteQuery(String query) {
+	private Response setDataAndExecuteQuery(String query) throws IOException {
 
 		Response response = null;
 		if (this.queryParserExecutor.isCreDbQuery(query)) {
@@ -118,7 +119,7 @@ public class WriteQueries {
 	private void printResponse(String status, String desc) {
 		System.out.println(status + ":" + desc);
 	}
-	public boolean manager() {
+	public boolean manager() throws IOException {
 		takeInput();
 
 		return true;
