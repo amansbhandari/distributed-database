@@ -3,9 +3,7 @@ package DiskHandler;
 import utils.UtilsConstant;
 import utils.UtilsFileHandler;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.List;
 
 public class DistributedManager
@@ -114,6 +112,49 @@ public class DistributedManager
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+        return true;
+    }
+
+    /**
+     * creates a new folder at the given path
+     * @param fullpath path of the file you are looking for. For e.g. database/University/metadata_students.txt
+     * @return
+     * @throws IOException
+     */
+    public static Boolean createFolder(String fullpath) throws IOException
+    {
+        new File(fullpath).mkdirs();
+
+        List<String> otherInstance = UtilsFileHandler.readFile("instances/remote.txt");
+
+        //The file is in remote instance.. write it
+        try {
+            RemoteHandler.executeCommand("mkdir dmwaproject/" + fullpath , otherInstance.get(1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    /**
+     * creates an empty global_metadata.txt
+     * @param fullpath path of the file you are looking for. For e.g. database/University/metadata_students.txt
+     * @return
+     * @throws IOException
+     */
+    public static Boolean createEmptyFile(String fullpath) throws IOException
+    {
+        PrintWriter writer = new PrintWriter(fullpath, "UTF-8");
+        writer.close();
+
+        List<String> otherInstance = UtilsFileHandler.readFile("instances/remote.txt");
+
+        //The file is in remote instance.. write it
+        try {
+            RemoteHandler.executeCommand("touch dmwaproject/" + fullpath , otherInstance.get(1));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return true;
     }

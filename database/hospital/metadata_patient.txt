@@ -1,4 +1,0 @@
-name|varchar|true|PK|||
-weight|INT|false||||
-disease|varchar|false||||
-age|INT|false||||
