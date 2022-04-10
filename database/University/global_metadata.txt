@@ -1,4 +1,4 @@
 metadata_students.txt|1
-metadata_courses.txt|1
-table_courses.txt|2
+metadata_courses.txt|2
+table_courses.txt|1
 table_students.txt|2

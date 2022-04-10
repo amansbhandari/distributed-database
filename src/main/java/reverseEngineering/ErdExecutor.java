@@ -62,7 +62,6 @@ public class ErdExecutor {
 		DrawERD drawERD = new DrawERD();
 		HashMap<String, HashMap<String, String[]>> dependencyGraph = reverseEngineering.getDependencyGraph();
 		String erd = drawERD.draw(rankOrder, reverseEngineering.getTableMetadata(this.dbName, "metadata_"), dependencyGraph);
-		System.out.println(erd);
 		return erd;
 	}
 
