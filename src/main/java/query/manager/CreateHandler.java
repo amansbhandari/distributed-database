@@ -20,6 +20,11 @@ public class CreateHandler {
     public static Response executeCreateQuery(CreateQuery createQuery) throws IOException
     {
         decideTableInstance(createQuery);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
         try {
@@ -31,6 +36,7 @@ public class CreateHandler {
         }
         return new Response(ResponseType.INTERNAL_ERROR, "System error.");
     }
+
 
     public static void decideTableInstance(CreateQuery createQuery) throws IOException
     {
@@ -59,9 +65,10 @@ public class CreateHandler {
         }
         if (tablesInInstance1 == tablesInInstance2)
 
-            return metadata + "\n" + "metadata_" + tableName + ".txt|" + 1 + "\n" + "table_" + tableName + ".txt|" + 1;
+            return metadata  + "metadata_" + tableName + ".txt|" + 1 + "\n" + "table_" + tableName + ".txt|" + 1;
         if (tablesInInstance1 < tablesInInstance2)
-            return metadata + "\n" + "metadata_" + tableName + ".txt|" + 1 + "\n" + "table_" + tableName + ".txt|" + 1;
-        return metadata + "\n" + "metadata_" + tableName + ".txt|" + 2 + "\n" + "table_" + tableName + ".txt|" + 2;
+            return metadata + "metadata_" + tableName + ".txt|" + 1 + "\n" + "table_" + tableName + ".txt|" + 1;
+        
+        return metadata  + "metadata_" + tableName + ".txt|" + 2 + "\n" + "table_" + tableName + ".txt|" + 2;
     }
 }

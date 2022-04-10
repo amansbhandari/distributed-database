@@ -103,7 +103,7 @@ public class DistributedManager
 
             fullpath =  REMOTE_DATABASE_PATH + fullpath;
             //The file is in remote instance.. write it
-            RemoteHandler.executeCommand("echo -e"  + "\""+ content + "\""+ "> " + fullpath , otherInstance.get(1));
+            RemoteHandler.executeCommand("echo -e"  + " \""+ content + "\""+ "> " + fullpath , otherInstance.get(1));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
