@@ -2,6 +2,9 @@ package query.manager;
 
 
 import query.container.CreateQuery;
+
+import java.io.IOException;
+
 import query.container.*;
 import query.container.CreateSchema;
 import query.container.InsertQuery;
@@ -17,7 +20,7 @@ public class QueryHandler
 {
 
 
-    public static Response executeQuery(Object query, SqlType sqlType)   //we will need to instantiate the
+    public static Response executeQuery(Object query, SqlType sqlType) throws IOException   //we will need to instantiate the
     {
         if(sqlType.equals(SqlType.CREATE))      //Handle create query
         {

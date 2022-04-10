@@ -7,13 +7,17 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import DiskHandler.DistributedManager;
 import utils.UtilsConstant;
+import utils.UtilsMetadata;
 
 public class Loger {
     String logPath = UtilsConstant.LOG_ROOT_FOLDER;
 
-    public void wirteLogs() {
-
+    public void wirteLogs(LogsParameters params) throws IOException, ParseException {
+        writeEventLog(params);
+        writeDatabaseLog(params);
+        writeQueryLog(params);
     }
 
     public void writeEventLog(LogsParameters params) throws IOException, ParseException {
@@ -65,12 +69,9 @@ public class Loger {
         try {
             Object obj = parser.parse(new FileReader(logPath + "/databaseLogs.json"));
             JSONObject logsJsonObject = (JSONObject) obj;
-            // String databaseName = "University";
-            // int numberOfTables = 2;
-            // String[] tableNames = { "students", "courses" };
-            // int[] numberOfRows = { 4, 2 };
             JSONArray databaseLogArray = (JSONArray) logsJsonObject.get("databases");
             JSONObject databaseObject = new JSONObject();
+            databaseObject.put("timeStamp", params.timeStamp);
             databaseObject.put("databaseName", params.database);
             databaseObject.put("numberOfTables", params.numberOfTables);
             JSONArray tableObjects = new JSONArray();
@@ -90,12 +91,10 @@ public class Loger {
             JSONObject logsJsonObject = (JSONObject) parser.parse(jsonString);
             fileWriter.append(logsJsonObject.toJSONString());
             
-            // String databaseName = "University";
-            // int numberOfTables = 2;
-            // String[] tableNames = { "students", "courses" };
-            // int[] numberOfRows = { 4, 2 };
+           
              JSONArray databaseLogArray = (JSONArray) logsJsonObject.get("databases");
             JSONObject databaseObject = new JSONObject();
+            databaseObject.put("timeStamp", params.timeStamp);
             databaseObject.put("databaseName", params.database);
             databaseObject.put("numberOfTables", params.numberOfTables);
             JSONArray tableObjects = new JSONArray();
@@ -117,17 +116,12 @@ public class Loger {
     }
 
     public void writeQueryLog(LogsParameters params) throws IOException, ParseException {
-        FileWriter fileWriter;
+        // FileWriter fileWriter;
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(new FileReader(logPath + "/queryLog.json"));
+            Object obj = parser.parse(new FileReader(logPath + "/queryLogs.json"));
             JSONObject logsJsonObject = (JSONObject) obj;
-            // String queryString = "CREATE TABLE T1";
-            // long excutionTime = 10;
-            // String user = "Qiwei";
-            // String timeStamp = new Timestamp(System.currentTimeMillis()).toString();
-            // String type = "CREATE";
-            JSONArray queryLogArray = (JSONArray) logsJsonObject.get("data");
+            JSONArray queryLogArray = (JSONArray) logsJsonObject.get("querys");
             JSONObject queryLog = new JSONObject();
             queryLog.put("user", params.user);
             queryLog.put("database", params.database);
@@ -139,16 +133,19 @@ public class Loger {
             queryLog.put("codition", params.condition);
             queryLog.put("columns", params.columns);
             queryLog.put("values", params.values);
+            queryLog.put("isSuccessful", params.isSuccessful);
             queryLogArray.add(queryLog);
-            fileWriter = new FileWriter(logPath + "/queryLog.json");
-            fileWriter.append(logsJsonObject.toJSONString());
+            // fileWriter = new FileWriter(logPath + "/queryLogs.json");
+            DistributedManager.writeFile("", logPath+"/queryLogs.json", "queryLogs.json", logsJsonObject.toJSONString());
+            // fileWriter.append(logsJsonObject.toJSONString());
         } catch (Exception e) {
-            fileWriter = new FileWriter(logPath + "/queryLog.json");
-            String jsonString = "{\"data\":[]}";
+            // fileWriter = new FileWriter(logPath + "/queryLogs.json");
+            String jsonString = "{\"querys\":[]}";
             JSONObject logsJsonObject = (JSONObject) parser.parse(jsonString);
-            fileWriter.append(logsJsonObject.toJSONString());
-
-            JSONArray queryLogArray = (JSONArray) logsJsonObject.get("data");
+            DistributedManager.writeFile("", logPath + "/queryLogs.json", "queryLogs.json",
+                    logsJsonObject.toJSONString());
+            // fileWriter.append(logsJsonObject.toJSONString());
+            JSONArray queryLogArray = (JSONArray) logsJsonObject.get("querys");
             JSONObject queryLog = new JSONObject();
             queryLog.put("user", params.user);
             queryLog.put("database", params.database);
@@ -157,57 +154,18 @@ public class Loger {
             queryLog.put("type", params.type);
             queryLog.put("excutionTime", params.excutionTime);
             queryLog.put("timeStamp", params.timeStamp);
-            queryLog.put("codition", params.condition);
+            queryLog.put("condition", params.condition);
             queryLog.put("columns", params.columns);
             queryLog.put("values", params.values);
+            queryLog.put("isSuccessful", params.isSuccessful);
             queryLogArray.add(queryLog);
-            fileWriter = new FileWriter(logPath + "/queryLog.json");
-            fileWriter.append(logsJsonObject.toJSONString());
+            DistributedManager.writeFile("", logPath + "/queryLogs.json", "queryLogs.json",
+                    logsJsonObject.toJSONString());
+            // fileWriter = new FileWriter(logPath + "/queryLogs.json");
+            // fileWriter.append(logsJsonObject.toJSONString());
         }
-        fileWriter.close();
-
-        // long excutionTime = getExcutionTime(query, sqlType);
-        // String queryString = sqlType.toString()+" "+query.toString();
-        // String user;
-        // Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        // String type = sqlType.toString();
-        // JSONObject queryLog= new JSONObject();
-        // queryLog.put("query",queryString);
+        // fileWriter.close();
 
     }
-
-    // public long getExcutionTime(Object query, SqlType sqlType) {
-    // long startTime = System.nanoTime();
-    // switch (sqlType) {
-    // case CREATE:
-    // CreateHandler.executeCreateQuery((CreateQuery) query);
-    // break;
-    // case SELECT:
-    // SelectHandler.executeSelectQuery((SelectQuery) query);
-    // break;
-    // case INSERT:
-    // InsertHandler.executeInsertQuery((InsertQuery) query);
-    // break;
-
-    // case DELETE:
-    // DeleteHandler.executeDeleteQuery((DeleteQuery) query);
-    // break;
-    // // case UPDATE:
-    // // UpdateHandler.executeUpdateQuery((UpdateQuery) query);
-    // // break;
-    // // case CHECK_SCHEMA:
-    // // CheckSchemaHandler.executeCheckSchemaQuery((CheckSchemaQuery) query);
-    // // break;
-    // // case CREATE_SCHEMA:
-    // // CreateSchemaHandler.executeCreateSchemaQuery((CreateSchemaQuery) query);
-    // // break;
-    // default:
-    // break;
-    // }
-
-    // long stopTime = System.nanoTime();
-    // long excutionTime = stopTime - startTime;
-    // return excutionTime;
-    // }
 
 }

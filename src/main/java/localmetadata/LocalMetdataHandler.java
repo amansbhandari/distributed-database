@@ -23,14 +23,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 public class LocalMetdataHandler {
 
-    public static Response createTableMetadata(CreateQuery createQuery, String path) throws FileNotFoundException, UnsupportedEncodingException {
+    public static Response createTableMetadata(CreateQuery createQuery, String path) throws IOException {
 
         String filePath = path + UtilsConstant.PREFIX_LOCAL_METADATA + createQuery.getTableName() + ".txt";
 

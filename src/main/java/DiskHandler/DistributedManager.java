@@ -4,6 +4,7 @@ import utils.UtilsConstant;
 import utils.UtilsFileHandler;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -16,8 +17,9 @@ public class DistributedManager
      * @param database
      * @param filename name of the file you are looking
      * @return
+     * @throws IOException
      */
-    private static String whichInstance(String database , String filename)
+    private static String whichInstance(String database , String filename) throws IOException
     {
         String fullPathGM = UtilsConstant.DATABASE_ROOT_FOLDER+"/"+ database + "/"+ UtilsConstant.GM_FILE_NAME;
         try {
@@ -47,8 +49,9 @@ public class DistributedManager
      * @param fullpath path of the file you are looking for. For e.g. database/University/metadata_students.txt
      * @param filename just the file name with extension you are looking for. For e.g. metadata_students.txt
      * @return
+     * @throws IOException
      */
-    public static List<String> readFile(String database, String fullpath, String filename)
+    public static List<String> readFile(String database, String fullpath, String filename) throws IOException
     {
         String instanceOfFile = whichInstance(database, filename);
         try {
@@ -80,8 +83,9 @@ public class DistributedManager
      * @param fullpath path of the file you are looking for. For e.g. database/University/metadata_students.txt
      * @param filename just the file name with extension you are looking for. For e.g. metadata_students.txt
      * @return
+     * @throws IOException
      */
-    public static Boolean writeFile(String database, String fullpath, String filename, String content)
+    public static Boolean writeFile(String database, String fullpath, String filename, String content) throws IOException
     {
         String instanceOfFile = whichInstance(database, filename);
         try {

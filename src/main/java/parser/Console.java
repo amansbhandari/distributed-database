@@ -11,7 +11,7 @@ import reverseEngineering.ReverseEngineering;
 
 public class Console {
 
-	boolean picker(int no) {
+	boolean picker(int no) throws IOException {
 		if (no == 1) {
 			WriteQueries wq = new WriteQueries();
 
@@ -43,7 +43,7 @@ public class Console {
 		return false;
 	}
 
-	void userInput() {
+	void userInput() throws IOException {
 
 		Scanner sc = new Scanner(System.in);
 		System.out.println();

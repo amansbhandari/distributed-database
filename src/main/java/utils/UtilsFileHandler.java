@@ -1,12 +1,16 @@
 package utils;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import com.jcraft.jsch.Buffer;
 
 public class UtilsFileHandler {
 
@@ -16,13 +20,14 @@ public class UtilsFileHandler {
         writer.close();
     }
 
-    public static List<String> readFile(String filepath) throws FileNotFoundException, UnsupportedEncodingException {
-        List content = new ArrayList<>();
-        Scanner in = new Scanner(new FileReader(filepath));
-        while (in.hasNext()) {
-            content.add(in.next());
+    public static List<String> readFile(String filepath) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(filepath));
+        String line = br.readLine();
+        List<String> content = new ArrayList<>();
+        while (line!=null) {
+            content.add(line);
+            line = br.readLine();
         }
-
         return content;
     }
 }
