@@ -32,7 +32,7 @@ public class ReverseEngineering {
             mTableMetadata = getTableMetadata(databaseName, "metadata_");
             for (String tableName: mTableMetadata.keySet()) {
                 dependencyGraph.put(tableName, null);
-                tableRank.put(tableName, count++);
+                tableRank.put(tableName.toLowerCase(), count++);
             }
 
     }
@@ -101,7 +101,7 @@ public class ReverseEngineering {
                         cardinality = "1:N";
                     else cardinality = "N:M";
                     dependencyHashMap.put(columnDesc[5],new String[]{columnDesc[5], columnDesc[6], cardinality});
-                    relationships.put(tableRank.get(tableName), tableRank.get(columnDesc[5]));
+                    relationships.put(tableRank.get(tableName), tableRank.get(columnDesc[5].toLowerCase()));
                 }
             }
             dependencyGraph.put(tableName, dependencyHashMap);

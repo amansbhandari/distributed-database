@@ -21,8 +21,18 @@ public class UtilsFileHandler {
     }
 
     public static List<String> readFile(String filepath) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(filepath));
-        String line = br.readLine();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(filepath));
+        } catch (FileNotFoundException e) {
+            return new ArrayList<>();
+        }
+        String line = null;
+        try {
+            line = br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         List<String> content = new ArrayList<>();
         while (line!=null) {
             content.add(line);

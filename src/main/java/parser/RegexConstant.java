@@ -14,7 +14,7 @@ public class RegexConstant {
 
 	public static final String DELETE_REGEX="(?i)(DELETE FROM)\\s+(\\w+)(\\s+(where)?\\s+(.*)?)?;";
 
-	public static final String SELECT_REGEX="((select)\\s+([*]|((\\w+),?\\s*)+)\\s+(from)\\s+(\\w+)\\s*(where\\s+(\\w+\\s*(=|>|<)\\s*\\w+))?\\s*;)";
+	public static final String SELECT_REGEX="((select)\\s+([]|((\\w+),?\\s)+)\\s+(from)\\s+(\\w+)\\s*(where\\s+(\\w+\\s*(=|>|<|>=|<=)\\s*\\w+))?\\s*;)";
 
 	public static final String UPDATE_REGEX="((UPDATE\\s+(\\w+))\\s+SET\\s+(\\w+\\s*=\\s*'[a-zA-z0-9 ]+')(\\s+WHERE\\s+(\\w+\\s*(=|<|>)\\s*'[a-zA-z0-9 ]+'))?\\s*;)";
 

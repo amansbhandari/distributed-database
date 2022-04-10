@@ -96,7 +96,13 @@ public class SelectQueryProcessor {
 	private void getOpeTokens(String stat) {
 
 		String values[] = null;
-		if (stat.contains("=")) {
+		if (stat.contains(">=")) {
+			values = stat.split(">=");
+			this.whereCond = WhereCond.GREATER_THAN_EQUALS;
+		} else if (stat.contains("<=")) {
+			values = stat.split("<=");
+			this.whereCond = WhereCond.LESS_THAN_EQUALS;
+		} else if (stat.contains("=")) {
 
 			values = stat.split("=");
 			this.whereCond = WhereCond.EQUALS;
@@ -107,6 +113,7 @@ public class SelectQueryProcessor {
 			values = stat.split("<");
 			this.whereCond = WhereCond.LESS_THAN;
 		}
+
 		this.columnInWhere = values[0].trim();
 		this.factor = values[1].trim();
 

@@ -29,6 +29,7 @@ public class LocalMetdataHandler {
     public static Response createTableMetadata(CreateQuery createQuery, String path) throws IOException {
 
         String filePath = path + UtilsConstant.PREFIX_LOCAL_METADATA + createQuery.getTableName() + ".txt";
+        String content = "";
 
         for (int i = 0; i < createQuery.getColumns().size(); i++) {
             String line = createQuery.getColumns().get(i) + UtilsConstant.SEPERATOR +
@@ -58,26 +59,28 @@ public class LocalMetdataHandler {
                         UtilsConstant.SEPERATOR;
             }
 
-            DistributedManager.writeFile(createQuery.getDatabase(),filePath,UtilsConstant.PREFIX_LOCAL_METADATA + createQuery.getTableName() + ".txt",line);
-
-
+            content += line + "\n";
         }
+        DistributedManager.writeFile(createQuery.getDatabase(),filePath,UtilsConstant.PREFIX_LOCAL_METADATA + createQuery.getTableName() + ".txt",content);
+
         return new Response(ResponseType.SUCCESS, "Query OK, 0 rows affected");
     }
 
 
     public static Response insertRows(InsertQuery insertQuery, String path) {
 
+        List<String> contentFile = new ArrayList<>();
         String filePath = path + UtilsConstant.PREFIX_TABLE + insertQuery.getTableName() + ".txt";
         String filePathMeta = path + UtilsConstant.PREFIX_LOCAL_METADATA + insertQuery.getTableName() + ".txt";
-        Writer fileOutput = null;
+//        Writer fileOutput = null;
         try {
-            fileOutput = new BufferedWriter(new FileWriter(filePath, true));
+            //fileOutput = new BufferedWriter(new FileWriter(filePath, true));
+            contentFile = DistributedManager.readFile(insertQuery.getDatabase(),filePath,UtilsConstant.PREFIX_TABLE + insertQuery.getTableName() + ".txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        String primaryKey = UtilsMetadata.getPrimarykey(filePathMeta);
+        String primaryKey = UtilsMetadata.getPrimarykey(filePathMeta,insertQuery.getDatabase(),UtilsConstant.PREFIX_LOCAL_METADATA + insertQuery.getTableName() + ".txt");
 
         if (!primaryKey.isEmpty()) {
             String primaryKeyVal = "";
@@ -87,12 +90,12 @@ public class LocalMetdataHandler {
                 }
             }
 
-            if (UtilsMetadata.primaryKeyViolation(filePathMeta, filePath, primaryKeyVal))
+            if (UtilsMetadata.primaryKeyViolation(filePathMeta, filePath, primaryKeyVal,insertQuery.getDatabase(),UtilsConstant.PREFIX_LOCAL_METADATA + insertQuery.getTableName() + ".txt"))
                 return new Response(ResponseType.FAILED, "Row with same primary key value already exists");
         }
 
-        String foreignKey = UtilsMetadata.getForeignkey(filePathMeta);
-        String foreignKeyRef = UtilsMetadata.getForeignKeyReference(filePathMeta);
+        String foreignKey = UtilsMetadata.getForeignkey(filePathMeta, insertQuery.getDatabase(),UtilsConstant.PREFIX_LOCAL_METADATA + insertQuery.getTableName() + ".txt");
+        String foreignKeyRef = UtilsMetadata.getForeignKeyReference(filePathMeta, insertQuery.getDatabase(),UtilsConstant.PREFIX_LOCAL_METADATA + insertQuery.getTableName() + ".txt");
         if (!foreignKeyRef.isEmpty())       //foreign key exists if true
         {
             String array[] = foreignKeyRef.split("[.]");
@@ -102,7 +105,7 @@ public class LocalMetdataHandler {
             String refMetaPath = path + UtilsConstant.PREFIX_LOCAL_METADATA + refTable + ".txt";
             String refTablePath = path + UtilsConstant.PREFIX_TABLE + refTable + ".txt";
 
-            int index = UtilsMetadata.getIndexOfColumnInTable(refMetaPath, refCol);
+            int index = UtilsMetadata.getIndexOfColumnInTable(refMetaPath, refCol,insertQuery.getDatabase(), UtilsConstant.PREFIX_LOCAL_METADATA + refTable + ".txt");
 
             String foreignKeyVal = "";
             for (int i = 0; i < insertQuery.getColumns().size(); i++) {
@@ -111,22 +114,19 @@ public class LocalMetdataHandler {
                 }
             }
 
-            if (UtilsMetadata.foreignKeyViolation(refTablePath, foreignKeyVal, index))
+            if (UtilsMetadata.foreignKeyViolation(refTablePath, foreignKeyVal, index,insertQuery.getDatabase(),UtilsConstant.PREFIX_TABLE + refTable + ".txt" ))
                 return new Response(ResponseType.FAILED, "Cannot add or update a child row: a foreign key constraint fails");
         }
 
-
-        Scanner in = null;
         List orderCol = new ArrayList<>();
 
-        try {       //create order
-            in = new Scanner(new FileReader(filePathMeta));
-            while (in.hasNext()) {
-                String line = in.next();
+        try {
+            List<String> lines = DistributedManager.readFile(insertQuery.getDatabase(),filePathMeta,UtilsConstant.PREFIX_LOCAL_METADATA + insertQuery.getTableName() + ".txt");
+            for(String line : lines) {
                 String array[] = line.split("[|]");
                 orderCol.add(array[0]);
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -141,12 +141,22 @@ public class LocalMetdataHandler {
 
         newLine = newLine.substring(0, newLine.length() - 1);
 
+
+        contentFile.add(newLine);
+        String finalResult = "";
+        for(String line : contentFile)
+        {
+            finalResult += line +"\n";
+        }
+        finalResult = finalResult.substring(0,finalResult.length()-1);
+//            fileOutput.close();
         try {
-            fileOutput.append(newLine + "\n");
-            fileOutput.close();
+            DistributedManager.writeFile(insertQuery.getDatabase(),filePath,UtilsConstant.PREFIX_TABLE + insertQuery.getTableName() + ".txt",finalResult);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
         return new Response(ResponseType.SUCCESS, "Inserted 1 row");
     }
 
@@ -196,21 +206,21 @@ public class LocalMetdataHandler {
         int indexOfLHS = -1;
 
         if(!selectQuery.getColumnInWhere().isEmpty())
-            indexOfLHS = UtilsMetadata.getIndexOfColumnInTable(fileMetaPath , selectQuery.getColumnInWhere());
+            indexOfLHS = UtilsMetadata.getIndexOfColumnInTable(fileMetaPath , selectQuery.getColumnInWhere(), selectQuery.getDatabase(),UtilsConstant.PREFIX_LOCAL_METADATA + selectQuery.getTableName() + ".txt");
 
         for(Object col : selectQuery.getColumns())
         {
             result += (String) col + UtilsConstant.SEPERATOR;
-            indexOfColumns.add(UtilsMetadata.getIndexOfColumnInTable(fileMetaPath , (String) col));
+            indexOfColumns.add(UtilsMetadata.getIndexOfColumnInTable(fileMetaPath , (String) col,selectQuery.getDatabase(), UtilsConstant.PREFIX_LOCAL_METADATA + selectQuery.getTableName() + ".txt"));
         }
 
         result = result.substring(0,result.length()-1);
         result += "\n";
 
         try {
-            Scanner in = new Scanner(new FileReader(fileTablePath));
-            while(in.hasNext()) {
-                String line = in.next();
+//            Scanner in = new Scanner(new FileReader(fileTablePath));
+            List<String> lines = DistributedManager.readFile(selectQuery.getDatabase(),fileTablePath, UtilsConstant.PREFIX_TABLE + selectQuery.getTableName() + ".txt");
+            for(String line : lines) {
                 String elements[] = line.split("[|]");
 
                 for(int i = 0;i < indexOfColumns.size() ; i++)
@@ -223,6 +233,8 @@ public class LocalMetdataHandler {
                 result += "\n";
             }
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -242,13 +254,12 @@ public class LocalMetdataHandler {
         String result = "";
 
         if(!deleteQuery.getColumnInWhere().isEmpty())
-            indexOfLHS = UtilsMetadata.getIndexOfColumnInTable(fileMetaPath , deleteQuery.getColumnInWhere());
+            indexOfLHS = UtilsMetadata.getIndexOfColumnInTable(fileMetaPath , deleteQuery.getColumnInWhere(), deleteQuery.getDatabase(), UtilsConstant.PREFIX_LOCAL_METADATA + deleteQuery.getTableName() + ".txt");
 
 
         try {
-            Scanner in = new Scanner(new FileReader(fileTablePath));
-            while(in.hasNext()) {
-                String line = in.next();
+            List<String> lines = DistributedManager.readFile(deleteQuery.getDatabase(),fileTablePath,UtilsConstant.PREFIX_LOCAL_METADATA + deleteQuery.getTableName() + ".txt");
+            for(String line : lines) {
                 String elements[] = line.split("[|]");
 
                 if(indexOfLHS != -1 &&
@@ -261,13 +272,16 @@ public class LocalMetdataHandler {
             if(!result.isEmpty())
                 result = result.substring(0,result.length()-1);
 
-            UtilsFileHandler.writeToFile(fileTablePath, result);
+            DistributedManager.writeFile(deleteQuery.getDatabase(),fileTablePath,UtilsConstant.PREFIX_TABLE + deleteQuery.getTableName() + ".txt",result);
+            //UtilsFileHandler.writeToFile(fileTablePath, result);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             new Response(ResponseType.INTERNAL_ERROR, "System error");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             new Response(ResponseType.INTERNAL_ERROR, "System error");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return new Response(ResponseType.SUCCESS,"Record(s) deleted");
