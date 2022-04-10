@@ -58,7 +58,7 @@ public class WriteQueries {
 		Response response = null;
 		if (this.queryParserExecutor.isCreDbQuery(query)) {
 			CreateDatabaseProcessor createDatabaseProc = this.queryParserExecutor.getCreateDatabaseProc();
-			CreateSchema createSchema = new CreateSchema(createDatabaseProc.getDbName());
+			CreateSchema createSchema = new CreateSchema(createDatabaseProc.getDbName().toLowerCase());
 			response = SchemaHandler.executeSchemaCreateQuery(createSchema);
 			printResponse(response.getResponseType().toString(), response.getDescription());
 		}
@@ -69,7 +69,7 @@ public class WriteQueries {
 				             clmnNull.add("false");
 			}
 			CreateQuery createQuery = new CreateQuery(createQueryProc.getColumns(), createQueryProc.getDatatype(), clmnNull,
-					createQueryProc.getTableName(), this.dbName, createQueryProc.getPrimaryKey(),
+					createQueryProc.getTableName().toLowerCase(), this.dbName, createQueryProc.getPrimaryKey(),
 					createQueryProc.getForeginKey(), createQueryProc.getRefTable(), createQueryProc.getRefId());
 
 			response = QueryHandler.executeQuery(createQuery, SqlType.CREATE);
@@ -78,7 +78,7 @@ public class WriteQueries {
 
 		else if (query.toLowerCase().contains("select")) {
 			SelectQueryProcessor selectQueryProc = this.queryParserExecutor.getSelectQueryProcessor();
-			SelectQuery selectQuery = new SelectQuery(selectQueryProc.getColumns(), selectQueryProc.getTableName(),
+			SelectQuery selectQuery = new SelectQuery(selectQueryProc.getColumns(), selectQueryProc.getTableName().toLowerCase(),
 					this.dbName, selectQueryProc.getColumnInWhere(), selectQueryProc.getWhereCond(),
 					selectQueryProc.getFactor(), selectQueryProc.isAllColumn());
 
@@ -87,7 +87,7 @@ public class WriteQueries {
 		}
 		else if (query.toLowerCase().contains("insert")) {
 			InsertQueryProcessor insertQueryProc = this.queryParserExecutor.getInsertQueryProcessor();
-			InsertQuery insertQuery = new InsertQuery(insertQueryProc.getColumns(),insertQueryProc.getTableName(),this.dbName,insertQueryProc.getValues());
+			InsertQuery insertQuery = new InsertQuery(insertQueryProc.getColumns(),insertQueryProc.getTableName().toLowerCase(),this.dbName,insertQueryProc.getValues());
 
 			response = QueryHandler.executeQuery(insertQuery, SqlType.INSERT);
 			printResponse(response.getResponseType().toString(), response.getDescription());
@@ -95,17 +95,17 @@ public class WriteQueries {
 		else if (query.toLowerCase().contains("delete")) {
 			DeleteQueryProcessor delQueryProc = this.queryParserExecutor.getDeleteQueryProcessor();
 
-			DeleteQuery delQuery = new DeleteQuery(delQueryProc.getTableName(),this.dbName,delQueryProc.getColumns(),WhereCond.EQUALS,delQueryProc.getValue());
+			DeleteQuery delQuery = new DeleteQuery(delQueryProc.getTableName().toLowerCase(),this.dbName,delQueryProc.getColumns(),WhereCond.EQUALS,delQueryProc.getValue());
 
 			response = QueryHandler.executeQuery(delQuery, SqlType.DELETE);
 			printResponse(response.getResponseType().toString(), response.getDescription());
 		}
 		else if (query.toLowerCase().contains("use")) {
 			UseDatabaseQueryProc useDatabaseQueryProc = this.queryParserExecutor.getUseDatabaseQueryProc();
-			CreateSchema createSchema = new CreateSchema(useDatabaseQueryProc.getDbName());
+			CreateSchema createSchema = new CreateSchema(useDatabaseQueryProc.getDbName().toLowerCase());
 			response = SchemaHandler.checkSchemaQuery(createSchema);
 			if (response.getResponseType().toString().equals(ResponseType.SUCCESS.toString())) {
-				this.dbName = useDatabaseQueryProc.getDbName();
+				this.dbName = useDatabaseQueryProc.getDbName().toLowerCase();
 				this.dbCreated = true;
 			}
 			printResponse(response.getResponseType().toString(), response.getDescription());
