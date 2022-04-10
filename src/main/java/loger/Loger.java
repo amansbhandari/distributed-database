@@ -1,7 +1,8 @@
 package loger;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,10 +22,11 @@ public class Loger {
     }
 
     public void writeEventLog(LogsParameters params) throws IOException, ParseException {
-        FileWriter fileWriter;
+        // ////FileWriter //fileWriter;
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(new FileReader(logPath + "/eventLogs.json"));
+            List<String> log=DistributedManager.readFile(params.database, logPath+"/eventLogs.json", "eventLogs.json");
+            Object obj = parser.parse(log.get(0));
             JSONObject logsJsonObject = (JSONObject) obj;
             JSONArray eventLogArray = (JSONArray) logsJsonObject.get("events");
             JSONObject eventLog = new JSONObject();
@@ -38,13 +40,17 @@ public class Loger {
             eventLog.put("values", params.values);
             eventLog.put("crashReport", params.crashReport);
             eventLogArray.add(eventLog);
-            fileWriter = new FileWriter(logPath + "/eventLogs.json");
-            fileWriter.append(logsJsonObject.toJSONString());
+            DistributedManager.writeFile("", logPath + "/eventLogs.json", "eventLogs.json",
+                    logsJsonObject.toJSONString());
+            // ////fileWriter = new //FileWriter(logPath + "/eventLogs.json");
+            // //fileWriter.append(logsJsonObject.toJSONString());
         } catch (Exception e) {
-            fileWriter = new FileWriter(logPath + "/eventLogs.json");
+            ////fileWriter = new //FileWriter(logPath + "/eventLogs.json");
             String jsonString = "{\"events\":[]}";
             JSONObject logsJsonObject = (JSONObject) parser.parse(jsonString);
-            fileWriter.append(logsJsonObject.toJSONString());
+            DistributedManager.writeFile("", logPath + "/eventLogs.json", "eventLogs.json",
+                    logsJsonObject.toJSONString());
+            //fileWriter.append(logsJsonObject.toJSONString());
             JSONArray eventLogArray = (JSONArray) logsJsonObject.get("events");
             JSONObject eventLog = new JSONObject();
             eventLog.put("timeStamp", params.timeStamp);
@@ -57,17 +63,21 @@ public class Loger {
             eventLog.put("values", params.values);
             eventLog.put("crashReport", params.crashReport);
             eventLogArray.add(eventLog);
-            fileWriter = new FileWriter(logPath + "/eventLogs.json");
-            fileWriter.append(logsJsonObject.toJSONString());
+            DistributedManager.writeFile("", logPath + "/eventLogs.json", "eventLogs.json",
+                    logsJsonObject.toJSONString());
+            // ////fileWriter = new //FileWriter(logPath + "/eventLogs.json");
+            // //fileWriter.append(logsJsonObject.toJSONString());
         }
-        fileWriter.close();
+        // //fileWriter.close();
     }
 
     public void writeDatabaseLog(LogsParameters params) throws IOException, ParseException {
-        FileWriter fileWriter;
+        // ////FileWriter //fileWriter;
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(new FileReader(logPath + "/databaseLogs.json"));
+            List<String> log = DistributedManager.readFile(params.database, logPath + "/databaseLogs.json",
+                    "databaseLogs.json");
+            Object obj = parser.parse(log.get(0));
             JSONObject logsJsonObject = (JSONObject) obj;
             JSONArray databaseLogArray = (JSONArray) logsJsonObject.get("databases");
             JSONObject databaseObject = new JSONObject();
@@ -83,13 +93,17 @@ public class Loger {
             }
             databaseObject.put("tables",tableObjects);
             databaseLogArray.add(databaseObject);
-            fileWriter = new FileWriter(logPath + "/databaseLogs.json");
-            fileWriter.append(logsJsonObject.toJSONString());
+            DistributedManager.writeFile("", logPath + "/databaseLogs.json", "databaseLogs.json",
+                    logsJsonObject.toJSONString());
+            ////fileWriter = new //FileWriter(logPath + "/databaseLogs.json");
+            //fileWriter.append(logsJsonObject.toJSONString());
         } catch (Exception e) {
-            fileWriter = new FileWriter(logPath + "/databaseLogs.json");
+            ////fileWriter = new //FileWriter(logPath + "/databaseLogs.json");
             String jsonString = "{\"databases\":[]}";
             JSONObject logsJsonObject = (JSONObject) parser.parse(jsonString);
-            fileWriter.append(logsJsonObject.toJSONString());
+            DistributedManager.writeFile("", logPath + "/databaseLogs.json", "databaseLogs.json",
+                    logsJsonObject.toJSONString());
+            //fileWriter.append(logsJsonObject.toJSONString());
             
            
              JSONArray databaseLogArray = (JSONArray) logsJsonObject.get("databases");
@@ -106,20 +120,25 @@ public class Loger {
             }
             databaseObject.put("tables",tableObjects);
             databaseLogArray.add(databaseObject);
-            fileWriter = new FileWriter(logPath + "/databaseLogs.json");
-            fileWriter.append(logsJsonObject.toJSONString());
+            DistributedManager.writeFile("", logPath + "/databaseLogs.json", "databaseLogs.json",
+                    logsJsonObject.toJSONString());
+            ////fileWriter = new //FileWriter(logPath + "/databaseLogs.json");
+            // //fileWriter.append(logsJsonObject.toJSONString());
+            
             
         }
-        fileWriter.close();
+        //fileWriter.close();
        
 
     }
 
     public void writeQueryLog(LogsParameters params) throws IOException, ParseException {
-        // FileWriter fileWriter;
+        // ////FileWriter //fileWriter;
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(new FileReader(logPath + "/queryLogs.json"));
+            List<String> log = DistributedManager.readFile(params.database, logPath + "/queryLogs.json",
+                    "queryLogs.json");
+            Object obj = parser.parse(log.get(0));
             JSONObject logsJsonObject = (JSONObject) obj;
             JSONArray queryLogArray = (JSONArray) logsJsonObject.get("querys");
             JSONObject queryLog = new JSONObject();
@@ -135,16 +154,16 @@ public class Loger {
             queryLog.put("values", params.values);
             queryLog.put("isSuccessful", params.isSuccessful);
             queryLogArray.add(queryLog);
-            // fileWriter = new FileWriter(logPath + "/queryLogs.json");
+            // ////fileWriter = new //FileWriter(logPath + "/queryLogs.json");
             DistributedManager.writeFile("", logPath+"/queryLogs.json", "queryLogs.json", logsJsonObject.toJSONString());
-            // fileWriter.append(logsJsonObject.toJSONString());
+            // //fileWriter.append(logsJsonObject.toJSONString());
         } catch (Exception e) {
-            // fileWriter = new FileWriter(logPath + "/queryLogs.json");
+            // ////fileWriter = new //FileWriter(logPath + "/queryLogs.json");
             String jsonString = "{\"querys\":[]}";
             JSONObject logsJsonObject = (JSONObject) parser.parse(jsonString);
             DistributedManager.writeFile("", logPath + "/queryLogs.json", "queryLogs.json",
                     logsJsonObject.toJSONString());
-            // fileWriter.append(logsJsonObject.toJSONString());
+            // //fileWriter.append(logsJsonObject.toJSONString());
             JSONArray queryLogArray = (JSONArray) logsJsonObject.get("querys");
             JSONObject queryLog = new JSONObject();
             queryLog.put("user", params.user);
@@ -161,10 +180,10 @@ public class Loger {
             queryLogArray.add(queryLog);
             DistributedManager.writeFile("", logPath + "/queryLogs.json", "queryLogs.json",
                     logsJsonObject.toJSONString());
-            // fileWriter = new FileWriter(logPath + "/queryLogs.json");
-            // fileWriter.append(logsJsonObject.toJSONString());
+            // ////fileWriter = new //FileWriter(logPath + "/queryLogs.json");
+            // //fileWriter.append(logsJsonObject.toJSONString());
         }
-        // fileWriter.close();
+        // //fileWriter.close();
 
     }
 
