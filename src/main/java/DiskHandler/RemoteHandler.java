@@ -40,12 +40,21 @@ public class RemoteHandler {
                 Thread.sleep(100);
             }
 
+
             String responseString = new String(responseStream.toByteArray());
-            String[] lines = responseString.split("[\\n]");
-            for(String line : lines)
+            if(responseString.isEmpty())
             {
-                content.add(line);
+                content = new ArrayList();
             }
+            else
+            {
+                String[] lines = responseString.split("[\\n]");
+                for(String line : lines)
+                {
+                    content.add(line);
+                }
+            }
+
 
         } finally {
             if (session != null) {

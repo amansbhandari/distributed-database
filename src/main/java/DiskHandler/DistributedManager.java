@@ -19,8 +19,11 @@ public class DistributedManager
      */
     private static String whichInstance(String database , String filename) throws IOException
     {
+        if(database.isEmpty())
+            return "-1";
+
         String fullPathGM = UtilsConstant.DATABASE_ROOT_FOLDER+"/"+ database + "/"+ UtilsConstant.GM_FILE_NAME;
-        try {
+
             List<String> content = UtilsFileHandler.readFile(fullPathGM);
 
             for(String line : content)
@@ -31,12 +34,6 @@ public class DistributedManager
                     return elements[1];
                 }
             }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
         return "-1";
     }
@@ -56,7 +53,7 @@ public class DistributedManager
             List<String> myInstance = UtilsFileHandler.readFile("instances/local.txt");
             List<String> otherInstance = UtilsFileHandler.readFile("instances/remote.txt");
 
-            if(instanceOfFile.equals(myInstance.get(0)) || filename.startsWith("global_") || fullpath.startsWith("logs"))    //The file is in current instance
+            if(instanceOfFile.equals(myInstance.get(0)) || filename.startsWith("global_") || fullpath.startsWith("logs") || fullpath.startsWith("analytics"))    //The file is in current instance
             {
                 return UtilsFileHandler.readFile(fullpath);
             }
@@ -86,17 +83,18 @@ public class DistributedManager
     public static Boolean writeFile(String database, String fullpath, String filename, String content) throws IOException
     {
         String instanceOfFile = whichInstance(database, filename);
+
+
         try {
             List<String> myInstance = UtilsFileHandler.readFile("instances/local.txt");
             List<String> otherInstance = UtilsFileHandler.readFile("instances/remote.txt");
 
-            if(instanceOfFile.equals(myInstance.get(0)) || filename.startsWith("global_") || fullpath.startsWith("logs") || fullpath.startsWith("dump"))    //The file is in current instance
+            if(instanceOfFile.equals(myInstance.get(0)) || filename.startsWith("global_") || fullpath.startsWith("logs") || fullpath.startsWith("dump") || fullpath.startsWith("analytics"))    //The file is in current instance
             {
                 UtilsFileHandler.writeToFile(fullpath, content);
 
-                if(!filename.startsWith("global_") && !fullpath.startsWith("logs") && !fullpath.startsWith("dump"))
+                if(!filename.startsWith("global_") && !fullpath.startsWith("logs") && !fullpath.startsWith("dump") && !fullpath.startsWith("analytics"))
                     return true;
-
             }
 
             fullpath =  REMOTE_DATABASE_PATH + fullpath;

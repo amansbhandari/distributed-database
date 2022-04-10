@@ -55,11 +55,11 @@ public class CreateQueryProcessor {
 
 			for (String data : metadata) {
 				data=" "+data;
-				String columnData[] = data.split("\\s+");
+				String columnData[] = data.trim().split("\\s+");
 
 
-				this.columns.add(columnData[1]);
-				this.datatype.add(columnData[2]);
+				this.columns.add(columnData[0]);
+				this.datatype.add(columnData[1]);
 				System.out.println(data);
 
 				if (columnData.length > 2) {

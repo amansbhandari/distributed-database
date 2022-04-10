@@ -37,32 +37,34 @@ public class UtilsMetadata {
         return false;
     }
 
-    public static List getColumnListAtIndex(String filePath, int colNo)
+    public static List getColumnListAtIndex(String filePath, int colNo, String database, String filename)
     {
         List results = new ArrayList();
         try {
-            Scanner in = new Scanner(new FileReader(filePath));
-            while(in.hasNext()) {
-                String line = in.next();
+//            Scanner in = new Scanner(new FileReader(filePath));
+            List<String> lines = DistributedManager.readFile(database,filePath,filename);
+            for(String line : lines) {
                 String elements[] = line.split("[|]");
 
                 results.add(elements[colNo]);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return results;
     }
 
-    public static int indexOfPrimarykey(String filePath)
+    public static int indexOfPrimarykey(String filePath,String database, String filename)
     {
         int index = 0;
 
         try {
-            Scanner in = new Scanner(new FileReader(filePath));
-            while(in.hasNext()) {
-                String line = in.next();
+            //Scanner in = new Scanner(new FileReader(filePath));
+            List<String> lines = DistributedManager.readFile(database,filePath,filename);
+            for(String line : lines) {
                 String elements[] = line.split("[|]");
 
                 if(elements.length > 3 &&  elements[3].equals("PK"))
@@ -73,20 +75,22 @@ public class UtilsMetadata {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return -1;
     }
 
 
-    public static String getPrimarykey(String filePath)
+    public static String getPrimarykey(String filePath, String database, String filename)
     {
         int index = 0;
 
         try {
-            Scanner in = new Scanner(new FileReader(filePath));
-            while(in.hasNext()) {
-                String line = in.next();
+//            Scanner in = new Scanner(new FileReader(filePath));
+            List<String> content = DistributedManager.readFile(database,filePath,filename);
+            for(String line : content) {
                 String elements[] = line.split("[|]");
 
                 if(elements.length > 3 &&  elements[3].equals("PK"))
@@ -97,19 +101,21 @@ public class UtilsMetadata {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return "";
     }
 
-    public static String getForeignkey(String filePath)
+    public static String getForeignkey(String filePath, String database, String filename)
     {
         int index = 0;
 
         try {
-            Scanner in = new Scanner(new FileReader(filePath));
-            while(in.hasNext()) {
-                String line = in.next();
+//            Scanner in = new Scanner(new FileReader(filePath));
+            List<String> lines = DistributedManager.readFile(database,filePath,filename);
+            for(String line : lines) {
                 String elements[] = line.split("[|]");
 
                 if(elements.length > 4 && elements[4].equals("FK"))
@@ -120,19 +126,21 @@ public class UtilsMetadata {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return "";
     }
 
-    public static String getForeignKeyReference(String filePath)
+    public static String getForeignKeyReference(String filePath, String database, String filename)
     {
         int index = 0;
 
         try {
-            Scanner in = new Scanner(new FileReader(filePath));
-            while(in.hasNext()) {
-                String line = in.next();
+//            Scanner in = new Scanner(new FileReader(filePath));
+            List<String> lines = DistributedManager.readFile(database,filePath,filename);
+            for(String line : lines) {
                 String elements[] = line.split("[|]");
 
                 if(elements.length > 4 && elements[4].equals("FK"))
@@ -143,16 +151,18 @@ public class UtilsMetadata {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return "";
     }
 
-    public static Boolean primaryKeyViolation(String metaFilePath, String tableFilePath, String valueToCheck)
+    public static Boolean primaryKeyViolation(String metaFilePath, String tableFilePath, String valueToCheck,String database, String filename)
     {
-        int index = indexOfPrimarykey(metaFilePath);
+        int index = indexOfPrimarykey(metaFilePath,database,filename);
 
-        List<String> colValues = getColumnListAtIndex(tableFilePath,index);
+        List<String> colValues = getColumnListAtIndex(tableFilePath,index,database,filename);
 
         for(String element : colValues)
         {
@@ -166,14 +176,14 @@ public class UtilsMetadata {
     }
 
 
-    public static int getIndexOfColumnInTable(String filePath, String colname)
+    public static int getIndexOfColumnInTable(String filePath, String colname,String database, String filename)
     {
         int index = 0;
 
         try {
-            Scanner in = new Scanner(new FileReader(filePath));
-            while(in.hasNext()) {
-                String line = in.next();
+//            Scanner in = new Scanner(new FileReader(filePath));
+            List<String> lines = DistributedManager.readFile(database,filePath,filename);
+            for(String line : lines) {
                 String elements[] = line.split("[|]");
 
                 if(elements[0].equals(colname))
@@ -184,14 +194,16 @@ public class UtilsMetadata {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return -1;
     }
 
-    public static Boolean foreignKeyViolation(String tableFilePath, String valueToCheck, int index)
+    public static Boolean foreignKeyViolation(String tableFilePath, String valueToCheck, int index, String database, String filename)
     {
-        List<String> colValues = getColumnListAtIndex(tableFilePath,index);
+        List<String> colValues = getColumnListAtIndex(tableFilePath,index,database,filename);
         Boolean flag = true;
 
         for(String element : colValues)
