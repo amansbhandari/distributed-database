@@ -13,7 +13,7 @@ public class RemoteHandler {
 
     private static final String username = "amansbhandari";
     private static final int port = 22;
-    private static final String privateKey = "/home/amansbhandari/keys/amansbhandari";
+    private static final String privateKey = "/Users/amansinghbhandari/Documents/gcp_keys/amansbhandari";
 
     public static List<String> executeCommand(String command, String host) throws Exception {
         Session session = null;

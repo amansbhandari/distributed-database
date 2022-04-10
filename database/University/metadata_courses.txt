@@ -1,4 +1,0 @@
-BannerID|varchar(30)|true|PK|FK|students|BannerID
-BookID|varchar(30)|true||||
-courseID|varchar(10)|true||||
-courseName|varchar(30)|false||||

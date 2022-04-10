@@ -58,7 +58,8 @@ public class LocalMetdataHandler {
                         UtilsConstant.SEPERATOR;
             }
 
-            DistributedManager.readFile(createQuery.getDatabase(),filePath,createQuery.getTableName() + ".txt");
+            DistributedManager.writeFile(createQuery.getDatabase(),filePath,UtilsConstant.PREFIX_LOCAL_METADATA + createQuery.getTableName() + ".txt",line);
+
 
         }
         return new Response(ResponseType.SUCCESS, "Query OK, 0 rows affected");
